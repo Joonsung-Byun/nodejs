@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+  <link href="/output.css" rel="stylesheet">
+</head>
+
+<body class="bg-gray-100 p-4 detail">
+
+    <%- include('nav.ejs') %>
+
+    <h1 class="text-xl">Detail Page</h1>
+    <div>
+        <h1 class="text-2xl font-bold"><%= data.title %></h1>
+        <p class="text-gray-700"><%= data.content %></p>
+    </div>
+  
+</body>
+
+</html>
