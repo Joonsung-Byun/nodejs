@@ -1,9 +1,7 @@
 const btn = document.getElementById('loginBtn');
 
 btn.addEventListener('click', (e) => {
-    e.preventDefault();
-    console.log('클릭');
-    
+    e.preventDefault()
     const email = document.getElementById('userEmail').value;
     const password = document.getElementById('userPassword').value;
 

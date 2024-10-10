@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link href="/output.css" rel="stylesheet">
+</head>
+
+<body class="bg-gray-100 pb-4">
+    <%- include('nav.ejs', {isAuthenticated: isAuthenticated}) %>
+
+    <div class="text-sm font-medium text-center text-gray-500 border-b border-gray-200 dark:text-gray-400 dark:border-gray-700">
+        <ul class="flex flex-wrap -mb-px">
+            <li class="me-2">
+                <a href="#" class="inline-block p-4 border-b-2 border-transparent rounded-t-lg hover:text-gray-600 hover:border-gray-300 dark:hover:text-gray-300">Recent</a>
+            </li>
+            <li class="me-2">
+                <a href="#" class="inline-block p-4 border-b-2 border-transparent rounded-t-lg hover:text-gray-600 hover:border-gray-300 dark:hover:text-gray-300" aria-current="page">Most Liked</a>
+            </li>
+            <li class="me-2">
+                <a href="#" class="inline-block p-4 border-b-2 border-transparent rounded-t-lg hover:text-gray-600 hover:border-gray-300 dark:hover:text-gray-300">Settings</a>
+            </li>
+
+        </ul>
+    </div>
+
+        <div id="listWrapper" class="gap-4">
+            <section id="homeWrapper" class="p-4">
+                <% for (let i = 0; i < 10; i++) { %>
+                    <div class="cardWrapper flex flex-col gap-4 bg-white rounded-lg drop-shadow-lg overflow-hidden mb-6">
+                        <section>
+                            <img src="/images/image.png" alt="hero" class="w-full h-auto">
+                        </section>
+
+                        <section class="flex flex-col gap-4 justify-between px-2">
+                            <div class="flex flex-col gap-1">
+                                <h2 class="font-semibold ">초기 유저 1000명 모으는 법</h2>
+
+                                <p>초기 유저 1000명 모으고 싶지 않나요? 최근 제가 만든 프로젝트가 1000명을 달성했습니다. 어떻게
+                                    1000명을 모았는지 공유 드릴게요!
+                                </p>
+                            </div>
+
+                            <span>2024년 9월 28일·11개의 댓글</span>
+
+                        </section>
+
+                        <section>
+                            
+                        </section>
+                    </div>
+                <% } %>
+            </section>
+        </div>
+        <script src="/main.js"></script>
+
+</body>
+
+</html>

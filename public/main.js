@@ -21,3 +21,5 @@ if (location.href.includes("write")) {
   write.style.color = "blue";
 }
 
+
+

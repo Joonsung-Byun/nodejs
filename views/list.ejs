@@ -15,26 +15,32 @@
 
 
     <!-- html을 해석해서 렌더링 해줌 -->
-    <div class="bg-white drop-shadow-lg pb-4">
+    <div class="drop-shadow-lg pb-4">
       <% for (let i=0; i < posts.length; i++) {%>
+        <% console.log(isAuthenticated) %>
+        <div class="cardWrapper flex flex-col gap-4 bg-white rounded-lg drop-shadow-lg overflow-hidden mb-6">
+          <section>
+              <img src="/images/image.png" alt="hero" class="w-full h-auto">
+          </section>
 
-        <div class="border-b border-gray-100 mb-4 p-3 flex flex-col gap-2 ">
-          <p class="text-black font-bold text-xl pb-3">
-            <a href="/detail/<%= posts[i].id %>" class=" cursor-pointer">
-              <%= posts[i].title %>
-            </a>
-          </p>
-          <p class="text-gray-400 text-sm">
-            <%= posts[i].content %>
-          </p>
-          <div>
-            <a href="/edit/<%= posts[i].id %>">✏️</a>
-            <span class="cursor-pointer delete" data-delete="<%= posts[i].id %>">🗑️</span>
-          </div>
+          <section class="flex flex-col gap-4 justify-between px-2">
+              <div class="flex flex-col gap-1">
+                  <h2 class="font-semibold "> <%= posts[i].title %></h2>
+               
 
-        </div>
+                  <% 
+                  const content = posts[i].content;
+                  const truncatedContent = content.length > 23 ? content.substring(0, 23) + '...' : content;
+                %>
+                <p class="text-gray-600"><%= truncatedContent %></p>
+              </div>
+
+              <span>2024년 9월 28일·11개의 댓글</span>
+              
+          </section>
+      </div>
+
         <% }%>
-        <% console.log(currentPage) %>
         
       </div>
 
