@@ -54,7 +54,6 @@ app.get("/detail/:id", async (req, res) => {
   });
 
 app.get("/list/:num", async (req, res) => {
-  console.log('여기까지 왔어요')
   const initStart = 6;
   const authStatus = isAuthenticated(req);
 
@@ -73,7 +72,6 @@ app.get("/list/:num", async (req, res) => {
       currentPage: req.params.num,
       isAuthenticated: authStatus.authenticated,
     });
-    console.log(authStatus.authenticated)
   } else {
     const { data, error } = await supabase
       .from("posts")

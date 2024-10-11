@@ -1,10 +1,11 @@
+import { marked } from "https://cdn.jsdelivr.net/npm/marked/lib/marked.esm.js";
 const h1Btn = document.querySelector("#h1Btn");
 const h2Btn = document.querySelector("#h2Btn");
 const h3Btn = document.querySelector("#h3Btn");
 const boldBtn = document.querySelector("#boldBtn");
 const textArea = document.querySelector("#content");
 const imageInput = document.querySelector("#file-input");
-
+const preview = document.querySelector("#preview");
 
 imageInput.addEventListener("change", async (e) => {
   const file = e.target.files[0];
@@ -26,9 +27,8 @@ imageInput.addEventListener("change", async (e) => {
         console.log(data);
         insertImageMarkdown(data.url);
       });
-}
+  }
 });
-
 
 // Markdown 이미지 삽입 함수
 function insertImageMarkdown(url) {
@@ -50,18 +50,15 @@ function addHash(e) {
   const num = e.dataset.tag;
   const cursorPosition = textArea.selectionStart;
   const textBeforeCursor = textArea.value.substring(0, cursorPosition);
-  const textAfterCursor = textArea.value.substring(cursorPosition);
-
-  if (textBeforeCursor == "") {
-    textArea.value = textBeforeCursor + "#".repeat(num) + textAfterCursor;
-    textArea.selectionStart = textArea.selectionEnd = cursorPosition + num + 1;
-    textArea.focus();
+  const hashTags = "#".repeat(num) + " ";
+  if (textBeforeCursor === "") {
+    textArea.value = hashTags
   } else {
-    textArea.value =
-      textBeforeCursor + "\n" + "#".repeat(num) + textAfterCursor;
-    textArea.selectionStart = textArea.selectionEnd = cursorPosition + num + 1;
-    textArea.focus();
+    textArea.value = textBeforeCursor + "\n" + hashTags;
   }
+  textArea.selectionStart = cursorPosition + num + 1  // 커서 시작 위치 설정
+  textArea.selectionEnd = cursorPosition + num + 1 // 커서 끝 위치도 동일하게 설정
+  textArea.focus();
 }
 
 h1Btn.addEventListener("click", (e) => {
@@ -123,3 +120,9 @@ tagInput.addEventListener("keydown", (e) => {
     }
   }
 });
+
+
+textArea.addEventListener("input", (e) => {
+  console.log(textArea.value)
+  preview.innerHTML = marked(textArea.value);
+})
