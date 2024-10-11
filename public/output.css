@@ -595,8 +595,16 @@ video {
   margin-inline-start: 0px;
 }
 
+.mt-2 {
+  margin-top: 0.5rem;
+}
+
 .mt-4 {
   margin-top: 1rem;
+}
+
+.mb-4 {
+  margin-bottom: 1rem;
 }
 
 .block {
@@ -631,12 +639,20 @@ video {
   height: 2rem;
 }
 
+.h-9 {
+  height: 2.25rem;
+}
+
 .h-auto {
   height: auto;
 }
 
 .h-full {
   height: 100%;
+}
+
+.h-96 {
+  height: 24rem;
 }
 
 .w-1\/2 {
@@ -657,6 +673,10 @@ video {
 
 .max-w-screen-xl {
   max-width: 1280px;
+}
+
+.basis-5\/12 {
+  flex-basis: 41.666667%;
 }
 
 .cursor-pointer {
@@ -695,6 +715,10 @@ video {
   gap: 0.25rem;
 }
 
+.gap-2 {
+  gap: 0.5rem;
+}
+
 .gap-3 {
   gap: 0.75rem;
 }
@@ -727,12 +751,28 @@ video {
   white-space: nowrap;
 }
 
+.text-wrap {
+  text-wrap: wrap;
+}
+
+.break-all {
+  word-break: break-all;
+}
+
 .rounded {
   border-radius: 0.25rem;
 }
 
+.rounded-2xl {
+  border-radius: 1rem;
+}
+
 .rounded-lg {
   border-radius: 0.5rem;
+}
+
+.rounded-xl {
+  border-radius: 0.75rem;
 }
 
 .rounded-e-lg {
@@ -781,6 +821,11 @@ video {
   border-color: rgb(209 213 219 / var(--tw-border-opacity));
 }
 
+.border-gray-400 {
+  --tw-border-opacity: 1;
+  border-color: rgb(156 163 175 / var(--tw-border-opacity));
+}
+
 .border-transparent {
   border-color: transparent;
 }
@@ -818,6 +863,11 @@ video {
 .bg-white {
   --tw-bg-opacity: 1;
   background-color: rgb(255 255 255 / var(--tw-bg-opacity));
+}
+
+.object-cover {
+  -o-object-fit: cover;
+     object-fit: cover;
 }
 
 .p-1 {
@@ -858,6 +908,11 @@ video {
 .px-5 {
   padding-left: 1.25rem;
   padding-right: 1.25rem;
+}
+
+.py-1 {
+  padding-top: 0.25rem;
+  padding-bottom: 0.25rem;
 }
 
 .py-2 {
@@ -911,11 +966,6 @@ video {
   line-height: 1.25rem;
 }
 
-.text-xl {
-  font-size: 1.25rem;
-  line-height: 1.75rem;
-}
-
 .font-bold {
   font-weight: 700;
 }
@@ -955,6 +1005,11 @@ video {
 .text-gray-900 {
   --tw-text-opacity: 1;
   color: rgb(17 24 39 / var(--tw-text-opacity));
+}
+
+.text-green-400 {
+  --tw-text-opacity: 1;
+  color: rgb(74 222 128 / var(--tw-text-opacity));
 }
 
 .text-white {
@@ -1042,6 +1097,18 @@ video {
 @media (min-width: 768px) {
   .md\:mt-0 {
     margin-top: 0px;
+  }
+
+  .md\:block {
+    display: block;
+  }
+
+  .md\:grid {
+    display: grid;
+  }
+
+  .md\:grid-cols-2 {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
   }
 
   .md\:flex-row {

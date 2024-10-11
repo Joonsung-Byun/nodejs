@@ -6,15 +6,19 @@ const boldBtn = document.querySelector("#boldBtn");
 const textArea = document.querySelector("#content");
 const imageInput = document.querySelector("#file-input");
 const preview = document.querySelector("#preview");
-
+const publishBtn = document.querySelector("#publishBtn");
+const title = document.querySelector('input[name="title"]');
 imageInput.addEventListener("change", async (e) => {
   const file = e.target.files[0];
+  
+  if (!file) {
+    console.error("No file selected");
+    return;
+  }
+
   if (file) {
-    console.log(file);
     const formData = new FormData();
     formData.append("file", file);
-
-    console.log(formData);
 
     fetch("/imgUpload", {
       method: "POST",
@@ -26,7 +30,9 @@ imageInput.addEventListener("change", async (e) => {
       .then((data) => {
         console.log(data);
         insertImageMarkdown(data.url);
-      });
+      }).catch((err) => {
+        console.error(err);
+      })
   }
 });
 
@@ -102,7 +108,6 @@ const tagArray = [];
 
 tagInput.addEventListener("keydown", (e) => {
   if (e.key === "Enter") {
-    console.log(tagInput.value);
 
     if (tagArray.includes(tagInput.value)) {
       alert("이미 추가된 태그입니다.");
@@ -120,9 +125,31 @@ tagInput.addEventListener("keydown", (e) => {
     }
   }
 });
-
-
+marked.setOptions({
+  breaks: true,
+  gfm: true,
+});
 textArea.addEventListener("input", (e) => {
-  console.log(textArea.value)
-  preview.innerHTML = marked(textArea.value);
-})
+  const content = textArea.value;
+  preview.innerHTML = marked(content);  // replace 제거, marked로 처리
+});
+
+publishBtn.addEventListener("click", async () => {
+  let tagString = tagArray.join(',');  
+  fetch("/add", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify({
+      title: title.value,
+      content: textArea.value,
+      tags: tagString,
+    }),
+  })
+    .then((res) => {
+      console.log('yeah')
+      window.location.href = "/";
+    })
+}
+);

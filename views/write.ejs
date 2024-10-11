@@ -11,9 +11,12 @@
     .tag {
       margin: 0px 5px;
       border: 1px solid #ccc;
-      padding: 5px;
-      border-radius: 5px;
+      padding: 3px 5px;
+      border-radius: 10px;
+      color: rgb(106, 252, 9);
+      background-color: #fdfdfde0;
     }
+
 
     h1 {
       font-size: 2em;
@@ -29,12 +32,13 @@
 
   </style>
 
-  <body class="bg-gray-100">
+  <body class="bg-white">
     <%- include('nav.ejs') %>
 
-    <section id="writeWrapper" class="p-4 grid grid-cols-2 gap-4">
+    <h2 class="mb-2 p-4">Your voice matters! Share your experiences and inspire others.</h2>
+    <section id="writeWrapper" class="p-4 md:grid md:grid-cols-2 gap-4">
       <div class="max-w-5xl ">
-        <h2 class="mb-6">Please share your thoughts! We love your stories.</h2>
+        
         <div class="mb-5">
           <span class="text-lg">Title</span>
           <input
@@ -50,14 +54,15 @@
         <div class="mb-5">
           <span class="text-lg">Tag</span>
           <div class="flex flex-wrap items-center">
-            <div id="taglist" class="flex gap-4 flex-wrap"></div>
+            
             <input
               type="text"
               id="tagInput"
               name="tag"
-              class="bg-gray-50 w-1/2 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+              class="bg-gray-50 border mb-4 w-full text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
               placeholder="Type your tag"
             />
+            <div id="taglist" class="flex gap-4 flex-wrap"></div>
           </div>
         </div>
 
@@ -88,7 +93,7 @@
                   <img src="images/imgUpload.svg" width="30" class="cursor-pointer"/>
               </label>
           
-              <input id="file-input" type="file" class="hidden"/>
+              <input id="file-input" type="file" class="hidden" accept="image/*"/>
           </div>
             </li>
           </ul>
@@ -100,22 +105,22 @@
             class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
           ></textarea>
         </div>
-
-        <button
-          class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm w-full sm:w-auto px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
+        <button id="publishBtn"
+          class="text-white bg-blue-700 block mx-auto hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm w-full sm:w-auto px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
         >
           Publish
         </button>
       </div>
 
-      <div id="markdownPreview" class="">
-        <h2 class="mb-6">Preview</h2>
-        <div id="preview" class="bg-white p-4 rounded-lg h-full"></div>
+      <div id="markdownPreview" class="hidden md:block text-wrap">
+        <span class="text-lg">Preview</span>
+        <div id="preview" class="bg-white border p-4 rounded-xl  h-full break-all"></div>
       </div>
     </section>
 
 
     
     <script type="module" src="/write.js"></script>
+    
   </body>
 </html>

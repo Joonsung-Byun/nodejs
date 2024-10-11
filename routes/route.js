@@ -15,11 +15,17 @@ app.get("/myPage", (req, res) => {
 
 app.get("/write", (req, res) => {
     const authStatus = isAuthenticated(req);
-    res.render("write.ejs", { isAuthenticated: authStatus.authenticated });
+    if (!authStatus.authenticated) {
+      res.send("<script>alert('로그인이 필요합니다.');location.href='/login';</script>");
+    } else {
+      res.render("write.ejs", { isAuthenticated: authStatus.authenticated });
+    }
+    
   });
 
 app.get("/login", (req, res) => {
     const authStatus = isAuthenticated(req);
+    console.log('여길 오셨군요')
     res.render("login.ejs", { isAuthenticated: authStatus.authenticated });
   });
 
