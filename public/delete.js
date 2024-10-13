@@ -2,7 +2,6 @@ const deletebtns = document.querySelectorAll(".delete");
 
 deletebtns.forEach((btn) => {
   btn.addEventListener("click", () => {
-    console.log(btn.dataset.delete);
     fetch("/delete", {
       method: "DELETE",
       headers: {
@@ -16,7 +15,6 @@ deletebtns.forEach((btn) => {
         return res.json()
       })
       .then((result) => {
-        console.log(result)
         btn.parentElement.parentElement.remove();
       })
       .catch((e) => {
@@ -47,3 +45,28 @@ const nextBtn = document.querySelector("#nextBtn")
 if(window.location.pathname === `/list/${page_btns.length}`){
   (nextBtn.children[0]).classList.add("pointer-events-none")
 }
+
+const previewContent = document.querySelectorAll('.data-content');
+
+const shortenWords = (str, length = 35) => {
+  let result = '';
+  if (str.length > length) {
+    result = str.substr(0, length - 2) + '...';
+  } else {
+    result = str;
+  }
+  return result;
+};
+previewContent.forEach(spanElement => {
+  const textNodes = [];
+
+  spanElement.childNodes.forEach(node => {
+    if (node.nodeType === Node.ELEMENT_NODE && node.tagName !== 'IMG') {
+      textNodes.push(node.textContent.trim());
+    }
+  });
+
+  const truncatedContent = (textNodes.join(',').replace(/,/g, ''));
+
+  spanElement.innerHTML = shortenWords(truncatedContent, 30);
+})

@@ -1,4 +1,8 @@
+
 import { marked } from "https://cdn.jsdelivr.net/npm/marked/lib/marked.esm.js";
+
+
+
 const h1Btn = document.querySelector("#h1Btn");
 const h2Btn = document.querySelector("#h2Btn");
 const h3Btn = document.querySelector("#h3Btn");
@@ -8,9 +12,13 @@ const imageInput = document.querySelector("#file-input");
 const preview = document.querySelector("#preview");
 const publishBtn = document.querySelector("#publishBtn");
 const title = document.querySelector('input[name="title"]');
+
+let thumbnailUrl = "";
+let count = 0
+
+
 imageInput.addEventListener("change", async (e) => {
   const file = e.target.files[0];
-  
   if (!file) {
     console.error("No file selected");
     return;
@@ -44,12 +52,26 @@ function insertImageMarkdown(url) {
 
   // Markdown 형식으로 이미지 URL 삽입
   const markdownImage = `![image description](${url})`;
-  textArea.value = textBeforeCursor + markdownImage + textAfterCursor;
+  if(textBeforeCursor === "") {
+    textArea.value = textBeforeCursor + markdownImage + textAfterCursor;}
+  else {
+    textArea.value = textBeforeCursor + "\n" + markdownImage + textAfterCursor
+  }
 
   // 커서를 삽입한 텍스트 끝으로 이동
   textArea.selectionStart = textArea.selectionEnd =
-    cursorPosition + markdownImage.length;
+  cursorPosition + markdownImage.length + 1;
   textArea.focus();
+
+  if(count === 0) {
+    thumbnailUrl = url;
+    console.log(thumbnailUrl);
+    console.log(typeof thumbnailUrl);
+    count++;
+  } else {
+    return;
+  }
+  
 }
 
 function addHash(e) {
@@ -125,16 +147,28 @@ tagInput.addEventListener("keydown", (e) => {
     }
   }
 });
-marked.setOptions({
-  breaks: true,
-  gfm: true,
-});
-textArea.addEventListener("input", (e) => {
-  const content = textArea.value;
-  preview.innerHTML = marked(content);  // replace 제거, marked로 처리
+
+
+textArea.addEventListener('input', function() {
+  let markdownText = textArea.value;
+
+  // Enter 한 번만 눌러도 줄바꿈이 되도록 처리
+  markdownText = markdownText.replace(/\n(?!\n)/g, '  \n'); // 마크다운에서 줄바꿈은 두 개의 공백과 \n이 필요
+
+  // Enter 두 번 누르면 문단을 변경
+  markdownText = markdownText.replace(/\n\n/g, '\n\n'); // 두 번의 줄바꿈은 그대로 유지
+
+  // Marked.js를 사용하여 마크다운을 HTML로 변환
+  const htmlContent = marked(markdownText);
+
+  // 변환된 HTML을 preview에 반영
+  preview.innerHTML = htmlContent;
 });
 
+
+
 publishBtn.addEventListener("click", async () => {
+  console.log(marked(textArea.value))
   let tagString = tagArray.join(',');  
   fetch("/add", {
     method: "POST",
@@ -144,7 +178,9 @@ publishBtn.addEventListener("click", async () => {
     body: JSON.stringify({
       title: title.value,
       content: textArea.value,
+      markdownContent: marked(textArea.value),
       tags: tagString,
+      thumbnailUrl: thumbnailUrl,
     }),
   })
     .then((res) => {

@@ -19,6 +19,10 @@
       font-size: 1.17em;
     }
 
+    p {
+      margin: 16px 0px;
+    }
+
   
   </style>
 </head>
@@ -69,24 +73,20 @@
 
    <div class="mt-2">
     <section>
-      <p class="text-gray-700" id="content"><%= data.content %></p>
+      <p class="text-gray-700 text-lg" id="content"><%= data.content %></p>
     </section>
    </div>   
   </div>
-
-
     
     <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
     <script>
-      document.getElementById('content').innerHTML =
-        marked.parse(document.getElementById('content').innerHTML);
+      let text = document.getElementById('content').innerHTML;
+      text = text.replace(/\n(?!\n)/g, '  \n');
+      text = text.replace(/\n\n/g, '\n\n');
+      document.getElementById('content').innerHTML = marked.parse(text);
+
     </script>
 
 </body>
 
 </html>
-
-<!-- <<script>
-  import { marked } from "https://cdn.jsdelivr.net/npm/marked/lib/marked.esm.js";
-</script> -->
-    <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script> 

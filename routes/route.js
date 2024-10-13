@@ -16,7 +16,7 @@ app.get("/myPage", (req, res) => {
 app.get("/write", (req, res) => {
     const authStatus = isAuthenticated(req);
     if (!authStatus.authenticated) {
-      res.send("<script>alert('로그인이 필요합니다.');location.href='/login';</script>");
+      res.send("<script>alert('Login is needed.');location.href='/login';</script>");
     } else {
       res.render("write.ejs", { isAuthenticated: authStatus.authenticated });
     }
@@ -67,7 +67,7 @@ app.get("/list/:num", async (req, res) => {
     const { data, error } = await supabase
       .from("posts")
       .select("*")
-      .order("id", { ascending: true }) 
+      .order("id", { ascending: false }) 
       .range(0, 5);
     const { data: total, error: totalError } = await supabase
       .from("posts")
@@ -82,7 +82,7 @@ app.get("/list/:num", async (req, res) => {
     const { data, error } = await supabase
       .from("posts")
       .select("*")
-      .order("id", { ascending: true }) 
+      .order("id", { ascending: false }) 
       .range(
         initStart * (req.params.num - 1),
         req.params.num * 5 + (req.params.num - 1)

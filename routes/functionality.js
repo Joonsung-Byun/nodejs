@@ -27,7 +27,6 @@ function getTimePost(){
 
 app.post("/add", async (req, res) => {
   console.log(isAuthenticated(req).user)
-  console.log(req.body)
   if (!req.body.title || !req.body.content) {
     res.send("Please fill in the title and content");
   } else {
@@ -37,6 +36,7 @@ app.post("/add", async (req, res) => {
     const day = String(today.getDate()).padStart(2, '0');
 
     const formattedDate = `${year}-${month}-${day}`;
+    console.log(req.body.thumbnailUrl)
     const { data, error } = await supabase
       .from("posts")
       .insert({ 
@@ -45,7 +45,9 @@ app.post("/add", async (req, res) => {
         writer: isAuthenticated(req).user.username, 
         date: formattedDate,
         writer_email: isAuthenticated(req).user.email,
-        tags: req.body.tags
+        tags: req.body.tags,
+        markdownContent: req.body.markdownContent,
+        thumbnailUrl: req.body.thumbnailUrl,
       })
       .select("*");
     res.redirect("/list/1");
