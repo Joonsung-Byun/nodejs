@@ -1,26 +1,44 @@
-<nav class= "dark:bg-gray-900 border border-b-2 border-b-slate-500">
+<nav class= "bg-blue-50 fixed w-full top-0 left-0 right-0 h-20 z-50 bg-opacity-95">
   <div class="max-w-screen-xl flex items-center justify-between  mx-auto p-4">
     <a href="/" class="flex items-center space-x-3 rtl:space-x-reverse">
       <span class="self-center text-2xl font-semibold whitespace-nowrap dark:text-white">NodeBlog</span>
     </a>
-      <ul class="font-medium flex justify-end md:p-0 border border-gray-100 rounded-lg md:flex-row md:space-x-8 rtl:space-x-reverse md:mt-0 md:border-0  dark:bg-gray-800 md:dark:bg-gray-900 dark:border-gray-700">
+      <ul class="font-medium flex justify-end rounded-lg md:flex-row md:space-x-8 rtl:space-x-reverse md:mt-0 md:border-0  dark:bg-gray-800 md:dark:bg-gray-900 dark:border-gray-700">
         <li>
-          <a href="/list/1" id="list" class="block py-2 px-3 text-gray-900 rounded hover:text-blue-700 hover:bg-gray-100 md:hover:bg-transparent md:border-0 md:hover:text-blue-700 md:p-0 dark:text-white md:dark:hover:text-blue-500 dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent">List</a>
+          <a href="/list/1" id="list" class="block py-2 px-3 text-gray-900 rounded hover:text-blue-700   md:hover:bg-transparent md:border-0 md:hover:text-blue-700  dark:text-white md:dark:hover:text-blue-500 dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent">List</a>
         </li>
         <li>
-          <a href="/write" id="write" class="block py-2 px-3 text-gray-900 rounded hover:text-blue-700 hover:bg-gray-100 md:hover:bg-transparent md:border-0 md:hover:text-blue-700 md:p-0 dark:text-white md:dark:hover:text-blue-500 dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent">Write</a>
+          <a href="/write" id="write" class="block py-2 px-3 text-gray-900 rounded hover:text-blue-700   md:hover:bg-transparent md:border-0 md:hover:text-blue-700  dark:text-white md:dark:hover:text-blue-500 dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent">Write</a>
         </li>
         <% if (isAuthenticated) { %>
           <li>
-            <a class="block cursor-pointer" href="/myPage"><img src="/images/profile.svg" width="40" height="40"/></a>
+            <a class="block cursor-pointer" href="/myPage">
+              <svg width="40px" height="40px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M12.12 12.78C12.05 12.77 11.96 12.77 11.88 12.78C10.12 12.72 8.71997 11.28 8.71997 9.50998C8.71997 7.69998 10.18 6.22998 12 6.22998C13.81 6.22998 15.28 7.69998 15.28 9.50998C15.27 11.28 13.88 12.72 12.12 12.78Z" stroke="#292D32" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                <path d="M18.74 19.3801C16.96 21.0101 14.6 22.0001 12 22.0001C9.40001 22.0001 7.04001 21.0101 5.26001 19.3801C5.36001 18.4401 5.96001 17.5201 7.03001 16.8001C9.77001 14.9801 14.25 14.9801 16.97 16.8001C18.04 17.5201 18.64 18.4401 18.74 19.3801Z" stroke="#292D32" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                <path d="M12 22C17.5228 22 22 17.5228 22 12C22 6.47715 17.5228 2 12 2C6.47715 2 2 6.47715 2 12C2 17.5228 6.47715 22 12 22Z" stroke="#292D32" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+              </svg>
+            </a>
           </li>
         <% } else { %>
           <li>
-            <a href="/login" class="block py-2 px-3 rounded hover:text-blue-500 bg-gray-500 text-white md:hover:bg-transparent md:hover:text-blue-700 md:p-0 md:dark:hover:text-blue-500 dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent">Login</a>
+            <a href="/login" class="block py-2 px-3 rounded hover:text-blue-500 bg-gray-500 text-white md:hover:bg-transparent md:hover:text-blue-700  md:dark:hover:text-blue-500 dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent">Login</a>
           </li>
         <% } %>
       </ul>
   </div>
 </nav>
 
+
+<style>
+    svg {
+      transition: fill 0.3s ease;
+    }
+
+    /* 마우스 호버 시 fill 색상 변경 */
+    svg:hover path {
+      stroke: rgb(63, 63, 250); /* 원하는 색상으로 변경 */
+    }
+  
+</style>
 <script src="/main.js"></script>

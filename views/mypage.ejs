@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>NodeBlog List</title>
+    <link href="/output.css" rel="stylesheet">
+    <style>
+        h1 {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: #292D32;
+        }
+
+        h2 {
+            font-size: 1.3rem;
+        }
+
+        .singlePost img {
+            display: none;
+        }
+    </style>
+</head>
+
+<body class="bg-gray-50 pb-4">
+    <%- include('nav.ejs') %>
+
+    <div id="mypageWrapper" class="mt-20">
+        <section class="header py-7 p-4 bg-white">
+            <img src="/images/profile.svg" alt="profile" class="w-24 h-24 rounded-full">
+            <h1><%- user.username %></h1>
+        </section>
+
+        <hr>
+
+        <section class="posts py-5 flex justify-end gap-4 p-4 bg-white">
+            <span class="text-lg"><strong>0</strong> 팔로워</span>
+            <span class="text-lg"><strong>0</strong> 팔로잉</span>
+        </section>
+
+        <section class="mt-5">
+            <div class="bg-white">
+                <div class="flex justify-between items-center p-4">
+                    <h2 class="text-lg font-semibold">My Posts</h2>
+                    <a href="/write" class="text-blue-500">Publish now</a>
+                </div>
+                <hr>
+
+                <div class="p-8">
+                    <% let tagArray = posts[0].tags.split(','); %>
+                    <% for (let i = 0; i < posts.length; i++) { %>
+                        <div class="flex flex-col gap-4 max-w-3xl border-b-2 rounded drop-shadow-lg overflow-hidden mb-6 pb-2 mx-auto">
+                            <% if (posts[i].thumbnailUrl) { %>
+                                <section class="relative w-full">
+                                    <img src="<%- posts[i].thumbnailUrl %>" alt="hero" class="block object-cover h-auto max-h-80 w-full">
+                                </section>
+                            <% } %>
+
+                            <section class="flex flex-col gap-4 justify-between px-2">
+                                <div class="flex flex-col gap-1 singlePost">
+                                    <a href="<%- `/detail/${posts[i].id}` %>">
+                                        <h2 class="font-semibold"><%= posts[i].title %></h2>
+                                    </a>
+                                    <span class="data-content"><%- posts[i].markdownContent %></span>
+                                </div>
+
+                                <% if (tagArray.length > 0 && tagArray[0] !== "") { %>
+                                    <section class="tags">
+                                        <ul class="flex gap-2">
+                                            <% tagArray.forEach(tag => { %>
+                                                <li class="tag border px-2 py-1 bg-gray-50 text-green-400 rounded-lg">
+                                                    <a class="text-green-400"><%- tag %></a>
+                                                </li>
+                                            <% }); %>
+                                        </ul>
+                                    </section>
+                                <% } %>
+
+                                <div class="flex gap-4">
+                                    <span><%- posts[i].createdAt %></span>
+                                    <span>0 comments</span>
+                                    <span>0 likes</span>
+                                </div>
+
+                                <div>
+                                    <span class="trashcan cursor-pointer mr-4 text-lg" data-deleteId= <%- `post_id_${posts[i].id}` %>>🗑️</span>
+                                    <span class="editpen cursor-pointer text-lg" data-editId= <%- `post_id_${posts[i].id}` %> >✏️</span>
+                                </div>
+
+                            </section>
+                        </div>
+                    <% } %>
+                </div>
+            </div>
+        </section>
+    </div>
+
+    <script src="/mypage.js"></script>
+</body>
+
+</html>

@@ -27,12 +27,12 @@
   </style>
 </head>
 
-<body class="bg-white p-4 detail">
+<body class="detail">
 
     <%- include('nav.ejs') %>
     <% console.log(data) %>
 
-    <div id="detailWrapper">
+    <div id="detailWrapper" class="p-4 mt-20">
 
     <div class="flex flex-col gap-4 mb-2">
 
@@ -46,7 +46,7 @@
           </div>
 
           <div class="flex">
-            <span class="border py-1 px-2 rounded-2xl h-9 border-gray-400" >❤️ 112</span>
+            <span class="border py-1 px-2 rounded-2xl h-9 border-gray-400" id="likeBtn" data-postId=<%- `post_id_${data.id}` %>>❤️ 112</span>
             <span></span>
           </div>
           
@@ -55,13 +55,16 @@
 
     <section class="tags">
       <ul class="flex gap-2">
-        <% console.log(data.tags) %>
         <% let tagArray = data.tags.split(',') %>
-        <% console.log(tagArray) %>
 
+        <% if(tagArray.length === 1 && tagArray[0] == "") {%>
+          <%null%>
+          <% } else { %>
         <% for (let i=0; i < tagArray.length; i++) { %>
           <li class="tag border px-2 py-1 bg-gray-50 text-green-400 rounded-lg"><a class="text-green-400"><%- tagArray[i] %></a></li>
         <% } %>
+        <% } %>
+
 
 
       </ul>
@@ -79,13 +82,7 @@
   </div>
     
     <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
-    <script>
-      let text = document.getElementById('content').innerHTML;
-      text = text.replace(/\n(?!\n)/g, '  \n');
-      text = text.replace(/\n\n/g, '\n\n');
-      document.getElementById('content').innerHTML = marked.parse(text);
-
-    </script>
+    <script src="/like.js"></script>
 
 </body>
 

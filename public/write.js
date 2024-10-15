@@ -53,25 +53,23 @@ function insertImageMarkdown(url) {
   // Markdown 형식으로 이미지 URL 삽입
   const markdownImage = `![image description](${url})`;
   if(textBeforeCursor === "") {
-    textArea.value = textBeforeCursor + markdownImage + textAfterCursor;}
-  else {
+    textArea.value = textBeforeCursor + markdownImage + textAfterCursor  
+  } else {
     textArea.value = textBeforeCursor + "\n" + markdownImage + textAfterCursor
   }
-
   // 커서를 삽입한 텍스트 끝으로 이동
   textArea.selectionStart = textArea.selectionEnd =
   cursorPosition + markdownImage.length + 1;
   textArea.focus();
 
+
   if(count === 0) {
     thumbnailUrl = url;
-    console.log(thumbnailUrl);
-    console.log(typeof thumbnailUrl);
     count++;
   } else {
     return;
   }
-  
+  textArea.dispatchEvent(new Event('input'));
 }
 
 function addHash(e) {
@@ -168,24 +166,29 @@ textArea.addEventListener('input', function() {
 
 
 publishBtn.addEventListener("click", async () => {
-  console.log(marked(textArea.value))
-  let tagString = tagArray.join(',');  
-  fetch("/add", {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-    },
-    body: JSON.stringify({
-      title: title.value,
-      content: textArea.value,
-      markdownContent: marked(textArea.value),
-      tags: tagString,
-      thumbnailUrl: thumbnailUrl,
-    }),
-  })
-    .then((res) => {
-      console.log('yeah')
-      window.location.href = "/";
+  if (!title.value || !textArea.value) {
+    alert("Title and content are required 😳");
+    return;
+  } else {
+    let tagString = tagArray.join(',');  
+    fetch("/add", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        title: title.value,
+        content: textArea.value,
+        markdownContent: marked(textArea.value),
+        tags: tagString,
+        thumbnailUrl: thumbnailUrl,
+      }),
     })
+      .then((res) => {
+        alert("Published successfully 🎉");
+        window.location.href = "/";
+      })
+  }
+
 }
 );

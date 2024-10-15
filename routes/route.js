@@ -9,10 +9,6 @@ app.get("/", (req, res) => {
     res.redirect("/list/1");
   });
 
-app.get("/myPage", (req, res) => {
-    res.send("My Page");
-  });
-
 app.get("/write", (req, res) => {
     const authStatus = isAuthenticated(req);
     if (!authStatus.authenticated) {
@@ -53,6 +49,8 @@ app.get("/detail/:id", async (req, res) => {
       if (data == null || data.length == 0) {
         res.status(404).send("Not Found");
       }
+
+      
       res.render("detail.ejs", { data: data[0], isAuthenticated: authStatus.authenticated });
     } catch (e) {
       res.status(404).send("Not Found");
@@ -96,6 +94,19 @@ app.get("/list/:num", async (req, res) => {
       currentPage: req.params.num,
       isAuthenticated: authStatus.authenticated,
     });
+  }
+});
+
+app.get("/myPage", async (req, res) => {
+  const authStatus = isAuthenticated(req);
+  if (!authStatus.authenticated) {
+    res.send("<script>alert('Login is needed.');location.href='/login';</script>");
+  } else {
+    const { data, error } = await supabase
+      .from("posts")
+      .select("*")
+      .eq("writer_email", authStatus.user.email);
+    res.render("myPage.ejs", { posts: data, isAuthenticated: authStatus.authenticated, user: authStatus.user, });
   }
 });
 

@@ -3,6 +3,7 @@ const app = express();
 const jwt = require("jsonwebtoken");
 const cookieParser = require("cookie-parser");
 app.use(cookieParser());
+const { v4: uuidv4 } = require('uuid'); 
 const multer = require("multer");
 const upload = multer();
 const { createClient } = require("@supabase/supabase-js");
@@ -11,16 +12,12 @@ require("dotenv").config();
 //supabase link
 const supabase = createClient(process.env.SUPABASEURL, process.env.SUPABASEKEY);
 
-function getTimePost(){
+function getDate(){
   const now = new Date();
   const year = now.getFullYear();
   const month = String(now.getMonth() + 1).padStart(2, "0");
   const day = String(now.getDate()).padStart(2, "0");
-  const hour = String(now.getHours()).padStart(2, "0");
-  const minute = String(now.getMinutes()).padStart(2, "0");
-  const second = String(now.getSeconds()).padStart(2, "0");
-  const formattedDate = `${year}-${month}-${day}${hour}:${minute
-  }:${second}`;
+  const formattedDate = `${year}-${month}-${day}`;
 
   return formattedDate;
 }
@@ -48,8 +45,10 @@ app.post("/add", async (req, res) => {
         tags: req.body.tags,
         markdownContent: req.body.markdownContent,
         thumbnailUrl: req.body.thumbnailUrl,
+        createdAt: getDate()
       })
       .select("*");
+      console.log(data)
     res.redirect("/list/1");
   }
 });
@@ -129,12 +128,11 @@ app.post("/signOut", async (req, res) => {
 
 app.post("/imgUpload", upload.single("file"), async (req, res) => {
   const file = req.file;
-
-
   try {
+    const uniqueFileName = `${uuidv4()}-${file.originalname}`;
     const { data, error } = await supabase.storage
       .from("joon-node-bucket")
-      .upload(`public/${file.originalname}`, file.buffer);
+      .upload(`public/${uniqueFileName}`, file.buffer);
 
     if (error) {
       console.error("Error uploading image:", error);
@@ -146,6 +144,27 @@ app.post("/imgUpload", upload.single("file"), async (req, res) => {
   } catch (err) {
     console.error("Error:", err);
     res.status(500).send("Server error.");
+  }
+});
+
+
+app.post("/like", async (req, res) => {
+  console.log(req.body.postId)
+  console.log(isAuthenticated(req).user.username)
+  const { data, error } = await supabase
+    .from("likes")
+    .insert([
+      {
+        username: isAuthenticated(req).user.username,
+        p_id: req.body.postId,
+      }
+    ])
+    .select("*")
+  if (error) {
+    res.status(500).send("Internal Server Error");
+    console.log(error)
+  } else {
+    res.status(200).send({ message: "success" });
   }
 });
 
