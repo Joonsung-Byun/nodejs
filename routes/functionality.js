@@ -64,10 +64,11 @@ app.post("/edit", async (req, res) => {
 });
 
 app.delete("/delete", async (req, res) => {
+  console.log(req.body.postId)
   const { data, error } = await supabase
     .from("posts")
     .delete()
-    .eq("id", parseInt(req.body.id));
+    .eq("id", parseInt(req.body.postId));
   if (error) {
     res.status(500).send("Internal Server Error");
   } else {

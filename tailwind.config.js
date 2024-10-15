@@ -5,7 +5,11 @@ module.exports = {
   ],
   
   theme: {
-    extend: {},
+    extend: {
+      translate: {
+        '-full': '-100%',
+      },
+    },
   },
   plugins: [],
 }
