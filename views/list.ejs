@@ -64,7 +64,8 @@
   </style>
 </head>
 
-<body class="bg-white pb-4"> <%- include('nav.ejs') %>
+<body class="bg-white pb-4"> 
+  <%- include('nav.ejs') %>
     <div class="min-h-screen">
       <div id="listWrapper" class="p-4 h-auto min-h-full ">
         <% if(posts.length===0) {%>
@@ -75,12 +76,13 @@
             <div class="drop-shadow-lg pb-4 flex flex-wrap justify-center w-full gap-x-4">
               <% for (let i=0; i < posts.length; i++) {%>
                 <div
-                  class="cardWrapper duration-500 hover:-translate-y-3 flex flex-col gap-2 bg-white rounded drop-shadow-lg overflow-hidden mb-6 pb-2 basis-11/12 md:basis-[48%] lg:basis-3/12">
-                  <a class="h-full" href=<%- `/detail/${posts[i].id}` %>> <section class="relative w-full">
+                  class="cardWrapper duration-300 hover:-translate-y-3 flex flex-col gap-2 bg-white rounded drop-shadow-lg overflow-hidden mb-6 pb-2 basis-11/12 md:basis-[48%] lg:basis-3/12">
+                  <a class="h-full" href=<%- `/detail/${posts[i].id}` %> > 
+                    <section class="relative w-full">
                       <% if(posts[i].thumbnailUrl !=="" ) { %> <img src="<%- posts[i].thumbnailUrl %>" alt="hero"
                           class="block object-cover h-auto max-h-64 w-full ">
                         <% } else {%>
-                          <%null%>
+                          <img src="/images/placeholder.jpg" alt="hero" class="block object-cover h-auto max-h-64 w-full ">
                             <%}%>
                     </section>
                     <section class="flex flex-col gap-4 justify-between pt-2 px-2">
@@ -89,6 +91,18 @@
                           <%= posts[i].title %>
                         </h2> <span class="data-content"><%- posts[i].markdownContent %></span>
                       </div> <span><%- posts[i].createdAt %></span>
+                    </section>
+
+                    <section class="pt-2 px-2 flex gap-2 border-t-2">
+                      
+                      <div>
+                        <span class="py-1 px-2 rounded-2xl h-9 border-gray-400 listLikes" data-id=<%- posts[i].id %>>❤️ <%- likesResult[i]  %> </span>
+                      </div>
+
+                      <div>
+                        <span class="py-1 px-2 rounded-2xl h-9 border-gray-400 listComments">comments</span>
+                      </div>
+
                     </section>
                   </a> </div>
                 <% }%>
@@ -120,6 +134,7 @@
                 </svg> </a> </li>
     </ul>
     <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
     <script src="/list.js"></script>
 </body>
 

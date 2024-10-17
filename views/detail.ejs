@@ -20,69 +20,144 @@
     }
 
     p {
-      margin: 16px 0px;
+      margin: 8px 0px 16px 0px;
     }
 
-  
+    img {
+      width: 60%;
+      display: block;
+      margin: 0 auto;
+    }
+
+    pre {
+      overflow: auto;
+      white-space: pre-wrap;
+      word-break: keep-all;
+    }
   </style>
 </head>
 
 <body class="detail">
 
-    <%- include('nav.ejs') %>
-    <% console.log(data) %>
-
+  <%- include('nav.ejs') %>
     <div id="detailWrapper" class="p-4 mt-20">
 
-    <div class="flex flex-col gap-4 mb-2">
+      <div class="flex flex-col gap-2 mb-6">
 
-    <section class="title py-2 header flex flex-col gap-4">
-        <h1 class="text-2xl font-bold"><%= data.title %></h1>
+        <section class="title py-2 header flex flex-col gap-4">
+          <h1 class="text-2xl font-bold">
+            <%= data.title %>
+          </h1>
 
-        <div class="flex justify-between">
-          <div class="flex gap-2 flex-wrap basis-5/12">
-            <span><strong><%= data.writer %></strong></span>
-            <span><%= data.date %></span>
+          <div class="flex justify-between">
+            <div class="flex gap-2 flex-wrap basis-5/12">
+              <span><strong>
+                  <%= data.writer %>
+                </strong></span>
+              <span>
+                <%= data.date %>
+              </span>
+            </div>
+
+            <div class="flex">
+              <span class="border py-1 px-2 rounded-2xl h-9 border-gray-400" id="likeBtn" data-postId=<%-
+                `post_id_${data.id}` %>>❤️ <%- likes.length %></span>
+              <span></span>
+            </div>
+
           </div>
+        </section>
 
-          <div class="flex">
-            <span class="border py-1 px-2 rounded-2xl h-9 border-gray-400" id="likeBtn" data-postId=<%- `post_id_${data.id}` %>>❤️ 112</span>
-            <span></span>
+        <section class="tags">
+          <ul class="flex gap-2">
+            <% let tagArray=data.tags.split(',') %>
+
+              <% if(tagArray.length===1 && tagArray[0]=="" ) {%>
+                <%null%>
+                  <% } else { %>
+                    <% for (let i=0; i < tagArray.length; i++) { %>
+                      <li class="tag border px-2 py-1 bg-gray-50 text-green-400 rounded-lg"><a
+                          class="text-green-400"><%- tagArray[i] %></a></li>
+                      <% } %>
+                        <% } %>
+          </ul>
+        </section>
+        <hr>
+        </hr>
+
+        <section>
+          <p class="text-gray-700 text-lg" id="content">
+            <%= data.content %>
+          </p>
+        </section>
+      </div>
+
+      <section>
+        <section class="bg-white dark:bg-gray-900 py-8 lg:py-16 antialiased">
+          <div class="max-w-2xl mx-auto px-4">
+            <div class="flex justify-between items-center mb-6">
+              <h2 class="text-lg lg:text-2xl font-bold text-gray-900 dark:text-white">Comments</h2>
+            </div>
+            <div class="mb-6">
+              <div
+                class="py-2 px-4 mb-4 bg-white rounded-lg rounded-t-lg border border-gray-200 dark:bg-gray-800 dark:border-gray-700">
+                <label for="comment" class="sr-only">Your comment</label>
+                <textarea id="comment" rows="6"
+                  class="px-0 w-full text-sm text-gray-900 border-0 focus:ring-0 focus:outline-none dark:text-white dark:placeholder-gray-400 dark:bg-gray-800"
+                  placeholder="Write a comment..." required></textarea>
+              </div>
+              <div class="flex justify-end">
+                <button id="commentBtn" data-postId=<%- data.id %>
+                  class="inline-flex items-center py-2.5 px-4 text-xs font-medium text-center text-white bg-slate-900
+                  rounded-lg focus:ring-4 focus:ring-primary-200 dark:focus:ring-primary-900 hover:bg-primary-800">
+                  Post comment
+                </button>
+              </div>
+
+              <div id="commentSection">
+              <% if(comments.length> 0 ) { %>
+                <% for (let i=0; i < comments.length; i++) { %>
+                  <article
+                    class="p-6 mb-3 text-base bg-white border-t border-gray-200 dark:border-gray-700 dark:bg-gray-900">
+                    <footer class="flex justify-between items-center mb-2">
+                      <div class="flex items-center">
+                        <p class="inline-flex items-center mr-3 text-sm text-gray-900 dark:text-white font-semibold">
+                          
+                          <% if(comments[i].writer_image == null) { %>
+                          
+                          <img class="mr-2 w-6 h-6 rounded-full"
+                            src="/images/profile.svg" alt="Bonnie Green">
+                          <% } else { %>
+                          <img class="mr-2 w-6 h-6 rounded-full" src="<%- comments[i].writer_image %>" alt="Bonnie Green">
+                          <% } %>                         
+                            <%= comments[i].writer %>
+                        </p>
+                        <p class="text-sm text-gray-600 dark:text-gray-400">
+                          <span>
+                            <%= comments[i].created_at %>
+                          </span>
+                        </p>
+                      </div>
+                    </footer>
+                    <p class="text-gray-500 dark:text-gray-400">
+                      <%= comments[i].content %>
+                    </p>
+                  </article>
+                  <% } %>
+                    <% } else {%>
+                      <p class="text-gray-500 dark:text-gray-400" id="noComment">No comments yet</p>
+                      <% } %>
+               </div>
+            </div>
           </div>
-          
-        </div>
-    </section>
+        </section>
+      </section>
+    </div>
 
-    <section class="tags">
-      <ul class="flex gap-2">
-        <% let tagArray = data.tags.split(',') %>
-
-        <% if(tagArray.length === 1 && tagArray[0] == "") {%>
-          <%null%>
-          <% } else { %>
-        <% for (let i=0; i < tagArray.length; i++) { %>
-          <li class="tag border px-2 py-1 bg-gray-50 text-green-400 rounded-lg"><a class="text-green-400"><%- tagArray[i] %></a></li>
-        <% } %>
-        <% } %>
-
-
-
-      </ul>
-    </section>
-
-  </div>
-
-  <hr></hr>
-
-   <div class="mt-2">
-    <section>
-      <p class="text-gray-700 text-lg" id="content"><%= data.content %></p>
-    </section>
-   </div>   
-  </div>
-    
     <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
     <script src="/like.js"></script>
+    <script src="/comment.js"></script>
 
 </body>
 

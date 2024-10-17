@@ -1,9 +1,14 @@
 const deleteBtns = document.querySelectorAll(".trashcan");
 const editBtns = document.querySelectorAll(".edit");
+const userImage = document.querySelector("#userImage");
+const imageDeleteBtn = document.querySelector("#imageDeleteBtn");
+
+const spinner = document.querySelector("#spinner");
+const navProfileImg = document.querySelector("#navProfileImg")
+  console.log(navProfileImg);
 
 deleteBtns.forEach(deleteBtn => {
   deleteBtn.addEventListener("click", function () {
-    console.log('연속으로 안되는 이유');
     console.log(this.dataset.deleteid);
     const postId = this.dataset.deleteid.substr(8);
     fetch(`/delete`, {
@@ -28,3 +33,53 @@ deleteBtns.forEach(deleteBtn => {
     });
   });
 });
+
+const imageUploadBtn = document.querySelector("#imageUploadBtn");
+const fileInput = document.querySelector("#file-input");
+
+imageUploadBtn.addEventListener("click", function (e){
+  e.preventDefault();
+  fileInput.click();
+})
+
+fileInput.addEventListener("change", function (e){
+  console.log(e.target.files[0]);
+
+  const formData = new FormData();
+  formData.append("file", e.target.files[0]);
+  spinner.classList.remove("hidden");
+  axios({
+    method: "post",
+    url: "/profileImgUpload",
+    data: formData,
+  })
+  .then((res) => {
+    console.log(res.data.url);
+    navProfileImg.src = res.data.url;
+    userImage.src = res.data.url;
+    spinner.classList.add("hidden");
+  }).catch((err) => {
+    console.error(err);
+  })
+})
+
+
+imageDeleteBtn.addEventListener("click", function (e){
+  e.preventDefault();
+  userImage.src = "/images/profile.svg";
+  deleteImage();
+
+})
+
+function deleteImage(){
+  axios({
+    method: "delete",
+    url: "/profileImgDelete",
+  })
+  .then((res) => {
+    console.log(res);
+    navProfileImg.src = "/images/profile.svg";
+  }).catch((err) => {
+    console.error(err);
+  })
+}

@@ -1,8 +1,4 @@
-
 import { marked } from "https://cdn.jsdelivr.net/npm/marked/lib/marked.esm.js";
-
-
-
 const h1Btn = document.querySelector("#h1Btn");
 const h2Btn = document.querySelector("#h2Btn");
 const h3Btn = document.querySelector("#h3Btn");
@@ -53,13 +49,13 @@ function insertImageMarkdown(url) {
   // Markdown 형식으로 이미지 URL 삽입
   const markdownImage = `![image description](${url})`;
   if(textBeforeCursor === "") {
-    textArea.value = textBeforeCursor + markdownImage + textAfterCursor  
+    textArea.value = textBeforeCursor + markdownImage + textAfterCursor + "\n"
   } else {
-    textArea.value = textBeforeCursor + "\n" + markdownImage + textAfterCursor
+    textArea.value = textBeforeCursor + "\n" + markdownImage + textAfterCursor + "\n"
   }
   // 커서를 삽입한 텍스트 끝으로 이동
   textArea.selectionStart = textArea.selectionEnd =
-  cursorPosition + markdownImage.length + 1;
+  cursorPosition + markdownImage.length + 1
   textArea.focus();
 
 
