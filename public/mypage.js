@@ -4,8 +4,7 @@ const userImage = document.querySelector("#userImage");
 const imageDeleteBtn = document.querySelector("#imageDeleteBtn");
 
 const spinner = document.querySelector("#spinner");
-const navProfileImg = document.querySelector("#navProfileImg")
-  console.log(navProfileImg);
+const navProfileImg = document.querySelector("#navProfileImg");
 
 deleteBtns.forEach(deleteBtn => {
   deleteBtn.addEventListener("click", function () {
@@ -77,7 +76,6 @@ function deleteImage(){
     url: "/profileImgDelete",
   })
   .then((res) => {
-    console.log(res);
     navProfileImg.src = "/images/profile.svg";
   }).catch((err) => {
     console.error(err);

@@ -110,6 +110,17 @@ app.get("/list/:num", async (req, res) => {
             console.error("Unexpected error:", err);
             res.status(500).json({ message: "Internal Server Error" });
           }
+          let commentsResult = [];
+
+          for( let i = 0; i < ids.length; i++){
+            const { data: commentLength, error } = await supabase
+            .from("comments")
+            .select("*")
+            .eq("p_id", parseInt(ids[i]));
+            commentsResult.push(commentLength.length);
+          }
+
+          console.log(commentsResult);
 
     
       const { data: total, error: totalError } = await supabase
@@ -135,6 +146,7 @@ app.get("/list/:num", async (req, res) => {
           isAuthenticated: authStatus.authenticated,
           likesResult: likesResult,
           profileImage: profileImage[0].image,
+          commentsResult: commentsResult
         })
       } else {
         res.render("list.ejs", {
@@ -143,6 +155,7 @@ app.get("/list/:num", async (req, res) => {
           currentPage: req.params.num,
           isAuthenticated: authStatus.authenticated,
           likesResult: likesResult,
+          commentsResult: commentsResult
       });
       }
   } else {

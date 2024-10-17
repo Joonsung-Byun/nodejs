@@ -2,5 +2,20 @@
 @tailwind components;
 @tailwind utilities;
 
+#profileDropdownMenu {
+    display: none;
+  }
+
+  #profileDropdownMenu.show {
+    display: block;
+  }
+
+  svg {
+    transition: fill 0.3s ease;
+  }
+
+  svg:hover path {
+    stroke: rgb(63, 63, 250);
+  }
 
 

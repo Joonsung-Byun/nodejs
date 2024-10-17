@@ -5,20 +5,20 @@ if (location.href.includes("list")) {
   const lists = document.querySelectorAll("#topNav li a");
 
   lists.forEach((singleList) => {
-    singleList.classList.remove("text-blue-700");
+    singleList.classList.remove("text-gray-400");
   });
 
-  list.style.color = "blue";
+  list.style.color = "white";
 }
 
 if (location.href.includes("write")) {
   const lists = document.querySelectorAll("#topNav li a");
 
   lists.forEach((singleList) => {
-    singleList.classList.remove("text-blue-700");
+    singleList.classList.remove("text-gray-400");
   });
 
-  write.style.color = "blue";
+  write.style.color = "white";
 }
 
 
@@ -40,3 +40,19 @@ signOutBtn.addEventListener("click", () => {
     });
 })
 
+  // 드롭다운 토글 기능
+  document.getElementById('profileDropdownToggle').addEventListener('click', function() {
+    console.log('디버깅')
+    const dropdownMenu = document.getElementById('profileDropdownMenu');
+    dropdownMenu.classList.toggle('show');
+  });
+
+  // 클릭 외 영역 클릭 시 드롭다운 닫기
+  window.addEventListener('click', function(e) {
+    const dropdownToggle = document.getElementById('profileDropdownToggle');
+    const dropdownMenu = document.getElementById('profileDropdownMenu');
+
+    if (!dropdownToggle.contains(e.target) && !dropdownMenu.contains(e.target)) {
+      dropdownMenu.classList.remove('show');
+    }
+  });
