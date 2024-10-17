@@ -54,6 +54,7 @@ fileInput.addEventListener("change", function (e){
   })
   .then((res) => {
     console.log(res.data.url);
+    navProfileImg.style.filter = "brightness(1)";
     navProfileImg.src = res.data.url;
     userImage.src = res.data.url;
     spinner.classList.add("hidden");

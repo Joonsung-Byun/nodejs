@@ -19,12 +19,12 @@
         </a>
 
         <!-- 드롭다운 메뉴 -->
-        <ul id="profileDropdownMenu" class="hidden absolute right-0 w-40 mt-2 bg-white rounded-lg shadow-lg">
+        <ul id="profileDropdownMenu" class="hidden absolute right-0 w-40 mt-2 bg-white rounded-lg shadow-lg overflow-hidden">
           <li>
-            <a href="/myPage" class="block px-4 py-2 text-gray-700 hover:bg-blue-100">My Page</a>
+            <a href="/myPage" class="block px-4 py-2 text-gray-700 hover:bg-black hover:text-white cursor-pointer">My Page</a>
           </li>
           <li>
-            <a class="block px-4 py-2 text-gray-700 hover:bg-blue-100 cursor-pointer" id="signOutBtn">Sign Out</a>
+            <a class="block px-4 py-2 text-gray-700 hover:bg-black hover:text-white cursor-pointer" id="signOutBtn">Sign Out</a>
           </li>
         </ul>
       </li>
@@ -42,7 +42,8 @@
 </nav>
 
 <style>
-  /* 프로필 이미지 호버 효과 */
-
+  #navProfileImg:hover {
+    filter: brightness(1.5);
+  }
 </style>
 <script src="/main.js"></script>

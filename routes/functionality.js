@@ -296,4 +296,23 @@ app.post("/comment", async (req, res) => {
   }
 });
 
+app.post("/signup", async (req, res) => {
+
+  const { data, error } = await supabase
+    .from("user")
+    .insert([
+      {
+        email: req.body.email,
+        password: req.body.password,
+        username: req.body.username,
+      },
+    ]);
+
+  if (error) {
+    res.status(500).json({ message: "Internal Server Error" });
+  } else {
+    res.status(200).json({ message: "success" });
+  }
+});
+
 module.exports = app;
