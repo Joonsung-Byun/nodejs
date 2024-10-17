@@ -217,7 +217,7 @@ app.get("/myPage", async (req, res) => {
       .select("image")
       .eq("id", authStatus.user.id);
 
-    res.render("myPage.ejs", { posts: data, isAuthenticated: authStatus.authenticated, user: authStatus.user, profileImage: profileImage[0].image });
+    res.render("mypage.ejs", { posts: data, isAuthenticated: authStatus.authenticated, user: authStatus.user, profileImage: profileImage[0].image });
   }
 });
 
