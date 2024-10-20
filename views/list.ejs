@@ -91,7 +91,6 @@
               </div> 
 
               <div class="flex gap-3">
-                <% console.log(commentsResult[i]) %>
                 <span><%- posts[i].createdAt %></span>
                 <span>•</span>
                 <span><%= commentsResult[i]%>  <%= commentsResult[i] == 0 || commentsResult[i] ==1 ? 'comment' : 'comments' %> </span>

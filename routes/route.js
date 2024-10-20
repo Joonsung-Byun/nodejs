@@ -3,10 +3,24 @@ const app = express();
 const isAuthenticated = require('../util/token');
 const { createClient } = require('@supabase/supabase-js');
 require('dotenv').config();
+
 const supabase = createClient(process.env.SUPABASEURL, process.env.SUPABASEKEY);
 
 app.get("/", (req, res) => {
     res.redirect("/list/1");
+  });
+
+  app.get("/recommendation", async (req, res) => {
+    const authStatus = isAuthenticated(req);
+    if(authStatus.authenticated){
+      const { data: profileImage, error: profileImageError } = await supabase
+      .from("user")
+      .select("image")
+      .eq("id", authStatus.user.id);
+      res.render("recommendation.ejs", { isAuthenticated: authStatus.authenticated, profileImage: profileImage[0].image });
+    } else {
+      res.render("recommendation.ejs", { isAuthenticated: authStatus.authenticated });
+    }
   });
 
 app.get("/write", async (req, res) => {
@@ -35,11 +49,16 @@ app.get("/signup", (req, res) => {
 
 app.get("/edit/:id", async (req, res) => {
     const authStatus = isAuthenticated(req);
+    if(!authStatus.authenticated) {
+      res.send("<script>alert('Login is needed.');location.href='/login';</script>");
+    }
     const { data, error } = await supabase
       .from("posts")
       .select("*")
       .eq("id", req.params.id);
-    res.render("edit.ejs", { data: data[0], isAuthenticated: authStatus.authenticated });
+
+
+    res.render("edit.ejs", { data: data[0], isAuthenticated: authStatus.authenticated, profileImage: authStatus.user.image });
   });
 
 app.get("/detail/:id", async (req, res) => {

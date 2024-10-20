@@ -11,6 +11,7 @@ const isAuthenticated = require("../util/token");
 require("dotenv").config();
 //supabase link
 const supabase = createClient(process.env.SUPABASEURL, process.env.SUPABASEKEY);
+const OpenAI = require('openai')
 
 function getDate() {
   const now = new Date();
@@ -21,17 +22,18 @@ function getDate() {
 
   return formattedDate;
 }
+const today = new Date();
+const year = today.getFullYear();
+const month = String(today.getMonth() + 1).padStart(2, "0"); // Months are 0-indexed
+const day = String(today.getDate()).padStart(2, "0");
+
+const formattedDate = `${year}-${month}-${day}`;
 
 app.post("/add", async (req, res) => {
   if (!req.body.title || !req.body.content) {
     res.send("Please fill in the title and content");
   } else {
-    const today = new Date();
-    const year = today.getFullYear();
-    const month = String(today.getMonth() + 1).padStart(2, "0"); // Months are 0-indexed
-    const day = String(today.getDate()).padStart(2, "0");
 
-    const formattedDate = `${year}-${month}-${day}`;
     const { data, error } = await supabase
       .from("posts")
       .insert({
@@ -49,6 +51,39 @@ app.post("/add", async (req, res) => {
     res.redirect("/list/1");
   }
 });
+
+app.put("/edit", async (req, res) => {
+  console.log(req.body);
+  try {
+    const { data, error } = await supabase
+    .from("posts")
+    .update({ 
+      title: req.body.title, 
+      content: req.body.content, 
+      date: formattedDate, 
+      markdownContent: req.body.markdownContent, 
+      thumbnailUrl: req.body.thumbnailUrl, 
+      tags: req.body.tags, 
+      createdAt: getDate() 
+    })
+    .eq("id", 203)
+
+    if(error) {
+      console.log(error)
+      res.status(500).send("Internal Server Error");
+    } else {
+      console.log(data)
+      res.status(200).json({ message: "success" });
+    }
+
+  } catch (err) {
+    console.error("Error:", err);
+    res.status(501).send("Server error.");
+  }
+
+}
+);
+
 
 app.post("/edit", async (req, res) => {
   const { data, error } = await supabase
@@ -314,5 +349,33 @@ app.post("/signup", async (req, res) => {
     res.status(200).json({ message: "success" });
   }
 });
+
+app.post("/recommend", async (req, res) => {
+  console.log('recommend')
+  const openai = new OpenAI({ apiKey: process.env.APIKEY });
+  
+  const days = req.body.days;
+  const location = req.body.location;
+  const type = req.body.type;
+  const budget = req.body.budget;
+
+
+  const completion = await openai.chat.completions.create({
+    messages: [
+      {
+        role: 'system',
+        content: 'You are a helpful assistant for trip planning.'
+      },
+      {
+        role: 'user',
+        content: `I will give you some information about the trip such as the number of days, location, type of trip, and budget. Budget will be either low, medium, and high. Analyze the information and recommend a trip. It is good to contain the restaurant, hotel, and tourist attractions. The days are ${days}, location is ${location}, type is ${type}, and budget is ${budget}. Your answer will be based on Markdown and do use #, ##, ###, and - for the list. Don't use something else. And You don't need intro and conclusion. Just give me the information.`
+      },
+    ],
+    model: 'gpt-4o-mini'
+  })
+  console.log(completion.choices[0].message.content);
+  res.status(200).json({message: completion.choices[0].message.content});
+})
+
 
 module.exports = app;

@@ -40,6 +40,7 @@ imageInput.addEventListener("change", async (e) => {
   }
 });
 
+
 // Markdown 이미지 삽입 함수
 function insertImageMarkdown(url) {
   const cursorPosition = textArea.selectionStart;
@@ -160,31 +161,93 @@ textArea.addEventListener('input', function() {
 });
 
 
-
-publishBtn.addEventListener("click", async () => {
-  if (!title.value || !textArea.value) {
-    alert("Title and content are required 😳");
-    return;
-  } else {
-    let tagString = tagArray.join(',');  
-    fetch("/add", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({
-        title: title.value,
-        content: textArea.value,
-        markdownContent: marked(textArea.value),
-        tags: tagString,
-        thumbnailUrl: thumbnailUrl,
-      }),
-    })
-      .then((res) => {
-        alert("Published successfully 🎉");
-        window.location.href = "/";
+if(location.href.includes("write")) {
+  publishBtn.addEventListener("click", async () => {
+    if (!title.value || !textArea.value) {
+      alert("Title and content are required 😳");
+      return;
+    } else {
+      let tagString = tagArray.join(',');  
+      fetch("/add", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          title: title.value,
+          content: textArea.value,
+          markdownContent: marked(textArea.value),
+          tags: tagString,
+          thumbnailUrl: thumbnailUrl,
+        }),
       })
+        .then((res) => {
+          alert("Published successfully 🎉");
+          window.location.href = "/";
+        })
+    }
+  
+  }
+  );
+}
+
+
+if(location.href.includes("edit")) {
+  function initialPreview(){
+    let markdownText = textArea.value;
+    markdownText = markdownText.replace(/\n(?!\n)/g, '  \n');
+    markdownText = markdownText.replace(/\n\n/g, '\n\n');
+    const htmlContent = marked(markdownText);
+    preview.innerHTML = htmlContent;
+}
+initialPreview();
+
+  function getThumbnailUrl() {
+    let editThumbnailUrl = document.querySelectorAll("#preview img");
+    if(editThumbnailUrl.length > 0) {
+      editThumbnailUrl = editThumbnailUrl[0].src;
+    } else {
+      editThumbnailUrl = null;
+    }
+    return editThumbnailUrl;
   }
 
+  const editBtn = document.querySelector("#editBtn");
+
+
+  editBtn.addEventListener("click", async () => {
+
+    if (!title.value || !textArea.value) {
+      alert("Title and content are required 😳");
+      return;
+    } else {
+      let tagString = tagArray.join(','); 
+      fetch("/edit", {
+        method: "PUT",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          id: editBtn.dataset.id,
+          title: title.value,
+          content: textArea.value,
+          markdownContent: marked(textArea.value),
+          tags: tagString,
+          thumbnailUrl: getThumbnailUrl(),
+        }),
+      })
+        .then(async (res) => {
+          let result = await res.json();
+          return result;
+        }).then((data) => {
+          alert(data.message);
+          window.location.href = "/mypage"
+        })
+    }
+  
+  }
+  );
 }
-);
+
+
+// console.log(document.querySelector("#editBtn"));

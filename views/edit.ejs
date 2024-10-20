@@ -6,32 +6,144 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Document</title>
   <link href="/output.css" rel="stylesheet">
+  <style>
+    .tag {
+      background-color: #fff2f2;
+      padding: 4px 8px;
+      color: rgb(110, 216, 5);
+      border-radius: 5px;
+    }
+
+    h1 {
+      font-size: 2em;
+    }
+
+    h2 {
+      font-size: 1.5em;
+    }
+
+    h3 {
+      font-size: 1.17em;
+    }
+
+    textarea {
+      font-size: 16px;
+      padding: 10px;
+    }
+    #preview {
+      border: 1px solid #ccc;
+      padding: 10px;
+      font-size: 16px;
+      overflow-y: auto;
+      white-space: pre-wrap;
+    }
+
+    #taglist span {
+      background-color: #fff2f2;
+      padding: 4px 8px;
+      color: rgb(110, 216, 5);
+      border-radius: 5px;
+    }
+  </style>
 </head>
+
 
 <body class="bg-gray-100 p-4">
   <%- include('nav.ejs') %>
 
-    <div class="bg-white">
-        <form class="max-w-5xl mx-auto" action="/edit" method="POST">
-        <div class="mb-5">
-            <label for="text" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Title</label>
-            <input type="text" id="text" name="title" value="<%= data.title %>" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="Title" required />
-          </div>
-          <div class="mb-5">
-            <label for="text" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Content</label>
-            <input type="text" id="text" name="content" value="<%= data.content %>" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" />
-          </div>
+  <section id="writeWrapper" class="p-4 md:grid md:grid-cols-2 gap-4 mt-20">
+    <div class="max-w-5xl ">
+      
+      <div class="mb-5">
+        <span class="text-lg">Title</span>
+        <input
+          type="text"
+          id="text"
+          name="title"
+          value="<%= data.title %>"
+          class="bg-gray-50 border mt-2 border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+          placeholder="Title"
+          required
+        />
+      </div>
 
-          <div class="mb-5">
-            <input type="hidden" name="id" value="<%= data.id %>">
-         </div>
+      <div class="mb-5">
+        <span class="text-lg mb-4">Tag</span>
+        <div class="flex flex-wrap items-center mt-2">
+          
+          <input
+            type="text"
+            id="tagInput"
+            name="tag"
+            class="bg-gray-50 border  mb-4 w-full text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+            placeholder="Type your tag and hit Enter"
+          />
+          <% const tagArray = data.tags.split(',') %>
+          <ul id="taglist" class="flex gap-4 flex-wrap">
+            <% for (let i=0; i < tagArray.length; i++) { %>
+            <li>
+              <span class="tag"><%= tagArray[i] %></span>
+            </li>
+            <% } %>
+          </ul>
+        </div>
+      </div>
 
-          <button type="submit" class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm w-full sm:w-auto px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">Submit</button>
-          </form>
-     
+      <div class="mb-5">
+        <span class="text-lg">Content</span>
+        <ul class="flex items-center gap-3">
+          <li class="cursor-pointer hover:bg-slate-300 rounded-lg">
+            <span id="h1Btn" data-tag="1" class="block p-1">H1</span>
+          </li>
+          <li class="cursor-pointer hover:bg-slate-300 rounded-lg">
+            <span id="h2Btn" data-tag="2" class="block p-1">H2</span>
+          </li>
+          <li class="cursor-pointer hover:bg-slate-300 rounded-lg">
+            <span id="h3Btn" data-tag="3" class="block p-1">H3</span>
+          </li>
+          <li
+            id="boldBtn"
+            class="cursor-pointer hover:bg-slate-300 rounded-lg"
+          >
+            <span class="block p-1 font-bold">Bold</span>
+          </li>
+          <li
+            id="imgUploadBtn"
+            class="cursor-pointer hover:bg-slate-300 rounded-lg p-1"
+          >
+          <div  class="cursor-pointer">
+            <label for="file-input">
+                <img src="/images/imgUpload.svg" width="30" class="cursor-pointer"/>
+            </label>
+        
+            <input id="file-input" type="file" class="hidden" accept="image/*"/>
+        </div>
+          </li>
+        </ul>
+
+        <textarea
+          id="content"
+          name="content"
+          rows="10"
+          class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+        ><%- data.content %></textarea>
+      </div>
+      <button id="editBtn"
+        data-id="<%= data.id %>"
+        class="text-white bg-blue-700 block mx-auto hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm w-full sm:w-auto px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
+      >
+        Update
+      </button>
     </div>
 
+    <div id="markdownPreview" class="hidden md:block text-wrap">
+      <span class="text-lg">Preview</span>
+      <div id="preview" class="bg-white border p-4 rounded-xl  h-full break-all"></div>
+    </div>
+  </section>
 
+
+  <script type="module" src="/write.js"></script>
 
 </body>
 

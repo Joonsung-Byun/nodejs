@@ -111,7 +111,7 @@
 
               <div>
                 <span class="trashcan cursor-pointer mr-4 text-lg" data-deleteId=<%- `post_id_${posts[i].id}` %>>🗑️</span>
-                <span class="editpen cursor-pointer text-lg" data-editId=<%- `post_id_${posts[i].id}` %>>✏️</span>
+                <a  href="<%- `/edit/${posts[i].id}` %>" class="editpen cursor-pointer text-lg" data-editId=<%- `post_id_${posts[i].id}` %>>✏️</a>
               </div>
             </section>
           </div>

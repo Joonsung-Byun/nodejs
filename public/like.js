@@ -49,7 +49,6 @@ document.querySelector('code').innerHTML = newStr
 const code = document.querySelector("code");
 if (code) {
   const codeText = code.textContent;
-  console.log(codeText);
   if (codeText.startsWith("![image description](https://")) {
     const url = codeText.slice(21, -1);
     const p = document.createElement("p");
@@ -58,6 +57,25 @@ if (code) {
     console.log(code.parentElement) //이게 pre태그인데 pre태그 없애고 img태그로 바꾸기
     code.parentElement.replaceWith(p);
     p.appendChild(img);
+  }
 
+  let 텍스트 = code.textContent
+
+  if (텍스트.startsWith("# ")) {
+    const h1 = document.createElement("h1")
+    h1.textContent = 텍스트.slice(2)
+    code.parentElement.replaceWith(h1)
+  } else if (텍스트.startsWith("## ")) {
+    const h2 = document.createElement("h2")
+    h2.textContent = 텍스트.slice(3)
+    code.parentElement.replaceWith(h2)
+  } else if (텍스트.startsWith("### ")) {
+    const h3 = document.createElement("h3")
+    h3.textContent = 텍스트.slice(4)
+    code.parentElement.replaceWith(h3)
+  } else if (텍스트.startsWith("**") && 텍스트.endsWith("**")) {
+    const strong = document.createElement("strong")
+    strong.textContent = 텍스트.slice(2, -2)
+    code.parentElement.replaceWith(strong)
   }
 }
