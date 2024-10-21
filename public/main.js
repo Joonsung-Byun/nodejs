@@ -2,6 +2,8 @@ const list = document.querySelector("#list");
 const write = document.querySelector("#write");
 const navDeProfileImg = document.querySelector("#navProfileImg");
 
+
+
 if (location.href.includes("list")) {
   const lists = document.querySelectorAll("#topNav li a");
 
@@ -34,6 +36,8 @@ if(location.href.includes("myPage")){
     navDeProfileImg.style.filter = "brightness(1.5)";
   }
 }
+
+
 
 try{
   const signOutBtn = document.querySelector("#signOutBtn");

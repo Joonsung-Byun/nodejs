@@ -3,15 +3,37 @@
     <a href="/" class="flex items-center space-x-3 rtl:space-x-reverse">
       <span class="self-center text-2xl font-semibold whitespace-nowrap text-white">NodeTrip</span>
     </a>
+
+    
     <ul class="font-medium flex justify-end items-center gap-4 rounded-lg md:flex-row md:space-x-8 rtl:space-x-reverse md:mt-0 md:border-0 dark:bg-gray-800 md:dark:bg-gray-900 dark:border-gray-700">
       <li>
-        <a href="/list/1" id="list" class="block text-gray-400 rounded hover:text-white md:hover:bg-transparent md:border-0">List</a>
+        <a href="/list/1" id="list" class="md:block hidden text-gray-400 rounded hover:text-white md:hover:bg-transparent md:border-0">List</a>
       </li>
       <li>
-        <a href="/recommendation" id="recommendation" class="block text-gray-400 rounded hover:text-white md:hover:bg-transparent md:border-0">Recommendation</a>
+        <a href="/recommendation" id="recommendation" class="md:block hidden text-gray-400 rounded hover:text-white md:hover:bg-transparent md:border-0">Recommendation</a>
       <li>
-        <a href="/write" id="write" class="block text-gray-400 rounded hover:text-white md:hover:bg-transparent md:border-0">Write</a>
+        <a href="/write" id="write" class="md:block hidden text-gray-400 rounded hover:text-white md:hover:bg-transparent md:border-0">Write</a>
       </li>
+
+
+      <button id="dropdownDefaultButton" data-dropdown-toggle="dropdown" class="text-3xl text-white relative md:hidden" type="button">&#9776;
+      
+          <ul id="dropdown" class=" absolute hidden bg-white right-0 mt-2 rounded-lg shadow-lg overflow-hidden w-48" aria-labelledby="dropdownDefaultButton">
+            <li>
+              <a href="/list/1" class="block px-4 py-2 text-base text-gray-700 hover:bg-black hover:text-white cursor-pointer text-left">List</a>
+            </li>
+            <li>
+              <a href="/recommendation" class="block px-4 py-2 text-base text-gray-700 hover:bg-black hover:text-white cursor-pointer text-left">Recommendation</a>
+            </li>
+            <li>
+              <a href="/write" class="block px-4 py-2 text-base text-gray-700 hover:bg-black hover:text-white cursor-pointer text-left">Write</a>
+            </li>
+          </ul>
+        </button>
+        
+        <!-- Dropdown menu -->
+
+
       <% if (isAuthenticated) { %>
       <li class="relative">
         <!-- 프로필 이미지 -->
@@ -37,7 +59,10 @@
       <% } %>
     </ul>
   </div>
+
 </nav>
+
+
 
 <style>
   #navProfileImg:hover {
@@ -45,3 +70,17 @@
   }
 </style>
 <script src="/main.js"></script>
+<script>
+  let dropdownDefaultButton = document.getElementById('dropdownDefaultButton');
+  let dropdown = document.getElementById('dropdown');
+
+  dropdownDefaultButton.addEventListener('click', () => {
+    dropdown.classList.toggle('hidden');
+  });
+
+  window.addEventListener('click', (e) => {
+    if (!dropdownDefaultButton.contains(e.target)) {
+      dropdown.classList.add('hidden');
+    }
+  });
+</script>
