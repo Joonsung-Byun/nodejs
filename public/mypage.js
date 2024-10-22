@@ -2,6 +2,7 @@ const deleteBtns = document.querySelectorAll(".trashcan");
 const editBtns = document.querySelectorAll(".edit");
 const userImage = document.querySelector("#userImage");
 const imageDeleteBtn = document.querySelector("#imageDeleteBtn");
+let content = document.querySelectorAll('.data-content')
 
 const spinner = document.querySelector("#spinner");
 const navProfileImg = document.querySelector("#navProfileImg");
@@ -82,3 +83,12 @@ function deleteImage(){
     console.error(err);
   })
 }
+
+content.forEach((singleCon) => {
+  if(singleCon.textContent.length > 41) {
+    singleCon.textContent = singleCon.textContent.substring(0, 40) + '...'
+  } else {
+    singleCon.textContent = singleCon.textContent.substring(0, 40)
+  }
+
+})

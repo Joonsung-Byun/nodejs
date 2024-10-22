@@ -373,8 +373,8 @@ app.post("/recommend", async (req, res) => {
     ],
     model: 'gpt-4o-mini'
   })
-  console.log(completion)
-  console.log(completion.choices[0].message.content);
+  
+  // the answer is in completion.choices[0].message.content
   res.status(200).json({message: completion.choices[0].message.content});
 })
 
