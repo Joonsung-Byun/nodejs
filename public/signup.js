@@ -4,7 +4,6 @@ const email = document.querySelector('#email');
 const password = document.querySelector('#password');
 const username = document.querySelector('#username');
 const passwordConfirm = document.querySelector('#passwordConfirm');
-console.log(email, password, username, passwordConfirm);
 
 submitBtn.addEventListener('click', (e) => {
     if(password.value !== passwordConfirm.value){

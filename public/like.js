@@ -35,8 +35,6 @@ likeBtn.addEventListener("click", async (e) => {
       return response.json();
     })
     .then((data) => {
-      // 성공적으로 좋아요가 처리된 경우
-        console.log('성공')
       likeBtn.textContent = `❤️ ${data.likes}`;
     })
     .catch((error) => {

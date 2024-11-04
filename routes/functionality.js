@@ -52,6 +52,10 @@ app.post("/add", async (req, res) => {
   }
 });
 
+app.get("/apikey", (req, res) => {
+  res.json({ key: process.env.APIKEY });
+})
+
 app.put("/edit", async (req, res) => {
   console.log(req.body);
   try {
@@ -165,7 +169,9 @@ app.post("/imgUpload", upload.single("file"), async (req, res) => {
     const uniqueFileName = `${uuidv4()}-${file.originalname}`;
     const { data, error } = await supabase.storage
       .from("joon-node-bucket")
-      .upload(`public/${uniqueFileName}`, file.buffer);
+      .upload(`public/${uniqueFileName}`, file.buffer, {
+        contentType: file.mimetype,
+      });
 
     if (error) {
       console.error("Error uploading image:", error);
