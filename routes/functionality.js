@@ -52,10 +52,6 @@ app.post("/add", async (req, res) => {
   }
 });
 
-app.get("/apikey", (req, res) => {
-  res.json({ key: process.env.APIKEY });
-})
-
 app.put("/edit", async (req, res) => {
   console.log(req.body);
   try {
