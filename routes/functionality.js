@@ -53,7 +53,7 @@ app.post("/add", async (req, res) => {
 });
 
 app.put("/edit", async (req, res) => {
-  console.log(req.body);
+
   try {
     const { data, error } = await supabase
     .from("posts")
@@ -72,7 +72,6 @@ app.put("/edit", async (req, res) => {
       console.log(error)
       res.status(500).send("Internal Server Error");
     } else {
-      console.log(data)
       res.status(200).json({ message: "success" });
     }
 
@@ -375,27 +374,28 @@ app.post("/recommend", async (req, res) => {
     ],
     model: 'gpt-4o-mini'
   })
-  console.log("isAuthenticated(req):", isAuthenticated(req))
-  const { data, error } = await supabase.from("recommendation")
 
-  .insert(
-    {
-      // user_id: isAuthenticated(req).user.id,
-      u_id: isAuthenticated(req) === true ? isAuthenticated(req).user.id : 0,
-      days: days,
-      location: location,
-      type: type,
-      budget: budget,
-      recommendation: completion.choices[0].message.content
+  if(isAuthenticated(req).authenticated === true){
+    const { data:insertHistory, error:insertHistoryError } = await supabase.from("recommendation")
+    .insert(
+      {
+        u_id:  isAuthenticated(req).user.id,
+        days: days,
+        location: location,
+        type: type,
+        budget: budget,
+        recommendation: completion.choices[0].message.content
+      }
+    ).select("*")
+
+    if(insertHistoryError){
+      console.log(insertHistoryError)
+    } else {
+      console.log(insertHistory)
     }
-  ).select("*")
-
-  if (error) {
-    console.log(error);
   }
 
 
-  
   // the answer is in completion.choices[0].message.content
   res.status(200).json({message: completion.choices[0].message.content});
 })
