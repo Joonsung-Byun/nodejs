@@ -1,4 +1,4 @@
-<nav class="bg-black fixed w-full top-0 left-0 right-0 h-20 z-50 bg-opacity-90">
+<nav class="bg-black fixed w-full top-0 left-0 right-0  z-50 bg-opacity-90">
   <div class="max-w-screen-xl flex items-center justify-between mx-auto p-4">
     <a href="/" class="flex items-center space-x-3 rtl:space-x-reverse">
       <span class="self-center text-2xl font-semibold whitespace-nowrap text-white">NodeTrip</span>
@@ -7,12 +7,12 @@
     
     <ul class="font-medium flex justify-end items-center gap-4 rounded-lg md:flex-row md:space-x-8 rtl:space-x-reverse md:mt-0 md:border-0">
       <li>
-        <a href="/list/1" id="list" class="md:block hidden text-gray-400 rounded hover:text-white bg-none md:border-0">List</a>
+        <a href="/list/1" id="list" class="md:block hidden text-gray-400 rounded hover:text-white bg-none md:border-0 text-lg">List</a>
       </li>
       <li>
-        <a href="/recommendation" id="recommendation" class="md:block hidden text-gray-400 rounded hover:text-white bg-none">Recommendation</a>
+        <a href="/recommendation" id="recommendation" class="md:block hidden text-gray-400 rounded hover:text-white bg-none text-lg">Recommendation</a>
       <li>
-        <a href="/write" id="write" class="md:block hidden text-gray-400 rounded hover:text-white bg-none">Write</a>
+        <a href="/write" id="write" class="md:block hidden text-gray-400 rounded hover:text-white bg-none text-lg">Write</a>
       </li>
 
 
@@ -67,6 +67,10 @@
 <style>
   #navProfileImg:hover {
     filter: brightness(1.5);
+  }
+
+  #profileDropdownMenu li {
+    margin-left: 0;
   }
 </style>
 <script src="/main.js"></script>

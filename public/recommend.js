@@ -1,9 +1,43 @@
 import { marked } from "https://cdn.jsdelivr.net/npm/marked/lib/marked.esm.js";
 
-const form = document.querySelector("#recommendForm");
+const recommendation = document.querySelector("#recommendation");
+recommendation.classList.add("text-white")
 
+const form = document.querySelector("#recommendForm");
 const btn = document.querySelector("#submitBtn");
 const spinner = document.querySelector("#spinner");
+const defaultSidebar = document.querySelector("#default-sidebar");
+const sideBtn = document.querySelector(".historyBtn");
+
+const deleteBtn = document.querySelector("#deleteBtn");
+
+if(deleteBtn) {
+  deleteBtn.addEventListener("click", (e) => {
+    modal.classList.add("hidden");
+  }
+  );
+}
+
+
+sideBtn.addEventListener("click", (e) => {
+  e.stopPropagation();
+  sideBtn.classList.toggle('rotate');
+  if(defaultSidebar.classList.contains("-translate-x-full")) {
+  defaultSidebar.classList.remove("-translate-x-full");
+  } else {
+    defaultSidebar.classList.add("-translate-x-full");
+  }
+});
+
+document.querySelector(".homeWrapper").addEventListener("click", (e) => {
+  if(sideBtn.classList.contains('rotate')) {
+    sideBtn.classList.remove('rotate');
+  }
+
+  if(!defaultSidebar.classList.contains("-translate-x-full")) {
+    defaultSidebar.classList.add("-translate-x-full");
+  }
+});
 
 btn.addEventListener("click", (e) => {
   e.preventDefault();

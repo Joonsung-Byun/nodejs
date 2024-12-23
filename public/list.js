@@ -2,9 +2,9 @@ const page_btns = document.querySelectorAll(".page_btn");
 
 for (let i = 0; i < page_btns.length; i++) {
   if (window.location.pathname === `/list/${i + 1}`) {
-    page_btns[i].style.color = "blue";
     page_btns[i].style.fontWeight = "bold";
-    page_btns[i].classList.remove("bg-white");
+    page_btns[i].style.backgroundColor = "blue";
+    page_btns[i].style.color = "white";
     page_btns[i].parentElement.style.backgroundColor = "LightSteelBlue";
   }
 }

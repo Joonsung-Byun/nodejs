@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title><%- data.location %> plan</title>
+  <link href="/output.css" rel="stylesheet">
+     <link rel="preconnect" href="https://fonts.googleapis.com">
+     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+     <link href="https://fonts.googleapis.com/css2?family=Noto+Sans:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
+</head>
+
+<body class="recommendationDetail">
+
+  <%- include('nav.ejs') %>
+  <% console.log(data) %>
+    <div id="recommendationDetailWrapper" class="gap-4 mt-[80px] md:mt-[66px] mx-auto lg:flex">
+
+      <div class="">
+        <button
+          class="historyBtn ml-4 mt-4 z-40 absolute drop-shadow-sm  rounded-lg p-2 gap-2 flex flex-col lg:hidden overflow-hidden">
+          <span class="line1 h-1 w-9 bg-gray-500 rounded-md"></span>
+          <span class="line2 h-1 w-9 bg-gray-500 rounded-md"></span>
+          <span class="line3 h-1 w-9 bg-gray-500 rounded-md"></span>
+        </button>
+        <aside id="default-sidebar"
+          class=" w-64 h-full absolute lg:relative transition-transform -translate-x-full lg:translate-x-0">
+          <div class="h-screen min-h-full px-3 py-4 overflow-y-auto bg-gray-50 dark:bg-gray-800">
+            <ul class="space-y-2 font-medium mt-10 lg:mt-0 list-none">
+              <% if (!isAuthenticated) { %>
+                <li>
+                  <a href="/login"
+                    class="flex items-center p-2 text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 group">
+                    <svg
+                      class="flex-shrink-0 w-5 h-5 text-gray-500 transition duration-75 dark:text-gray-400 group-hover:text-gray-900 dark:group-hover:text-white"
+                      aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 18 16">
+                      <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                        d="M1 8h11m0 0L8 4m4 4-4 4m4-11h3a2 2 0 0 1 2 2v10a2 2 0 0 1-2 2h-3" />
+                    </svg>
+                    <span class="flex-1 ms-3 whitespace-nowrap"></span>
+                  </a>
+                </li>
+                <% } else {%>
+                  <% history.forEach((item)=> { %>
+                    <li class="eachList hover:bg-gray-200 p-2 rounded-md">
+                      <a class="block" href=<%- `/recommendation/detail/${item.id}` %>> <%- item.location %>, <%-
+                            item.days %>
+                            <%- item.days==1 ? 'day' : 'days' %>
+                      </a>
+                    </li>
+                    <% }) %>
+                    <!--new trip plan button, href is going to be /recommendation-->
+                    <li>
+                      <a href="/recommendation" class="flex items center p-2 text-white rounded-lg  bg-slate-800 group">
+                        <svg class="flex-shrink-0 w-5 h-5 text-white transition duration-75  " aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 18 16">
+                          <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M1 8h11m0 0L8 4m4 4-4 4m4-11h3a2 2 0 0 1 2 2v10a2 2 0 0 1-2 2h-3" />
+                        </svg>
+                        <span class="flex-1 ms-3 whitespace-nowrap">New Trip Plan</span>
+                      </a>
+                      <% } %>
+
+            </ul>
+          </div>
+        </aside>
+      </div>
+
+      <section  class="pl-24 pt-6 lg:basis-8/12 homeWrapper">
+        <h3>Destination: <%= data.location %></h3>
+        <h3>Days: <%= data.days %> <%- data.days == 1 ? 'day' : 'days' %></h3>
+        <h3>Type: <%= data.type %></h3>
+        <h3>Budget: <%= data.budget %></h3>
+
+        <p id="recommendationContent" class="pr-4 pb-3">
+          <%- data.recommendation %>
+        </p>
+      </section>
+
+
+
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+    <script type="module" src="/recommendHistory.js"></script>
+
+</body>
+
+</html>

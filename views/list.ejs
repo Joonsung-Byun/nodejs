@@ -6,65 +6,12 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>NodeBlog List</title>
   <link href="/output.css" rel="stylesheet">
-  <style>
-    h2 {
-      font-size: 1.3rem;
-    }
-
-    .singlePost img {
-      display: none;
-    }
-
-    .cardWrapper:nth-child(1) {
-      margin-top: 96px;
-    }
-
-    @media (min-width: 768px) {
-      .cardWrapper:nth-child(2) {
-        margin-top: 96px;
-      }
-    }
-
-    @media (min-width: 1024px) {
-      .cardWrapper:nth-child(3) {
-        margin-top: 96px;
-      }
-    }
-
-    @media (min-width: 1441px) {
-      .cardWrapper {
-        flex-basis: 23%;
-      }
-
-      .cardWrapper:nth-child(4) {
-        margin-top: 96px;
-      }
-    }
-
-    @media (min-width: 1921px) {
-      .cardWrapper {
-        flex-basis: 18%;
-      }
-
-      .cardWrapper:nth-child(5) {
-        margin-top: 96px;
-      }
-    }
-
-    #listWrapper {
-      height: auto;
-      min-height: 100%;
-      padding-bottom: 50px;
-    }
-
-    #pagination {
-      position: relative;
-      transform: translateY(-150%);
-    }
-  </style>
+     <link rel="preconnect" href="https://fonts.googleapis.com">
+     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+     <link href="https://fonts.googleapis.com/css2?family=Noto+Sans:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
 </head>
 
-<body class="bg-white pb-4">
+<body class="bg-white pb-4 list">
   <%- include('nav.ejs') %>
   <div class="min-h-screen">
     <div id="listWrapper" class="p-4 h-auto min-h-full ">

@@ -353,7 +353,7 @@ app.post("/signup", async (req, res) => {
 });
 
 app.post("/recommend", async (req, res) => {
-  console.log('recommend')
+
   const openai = new OpenAI({ apiKey: process.env.APIKEY });
   
   const days = req.body.days;
@@ -366,15 +366,33 @@ app.post("/recommend", async (req, res) => {
     messages: [
       {
         role: 'system',
-        content: 'You are a helpful assistant for trip planning.'
+        content: "You are a helpful assistant for trip planning. I will give you some information about the trip such as the number of days, location, type of trip, and budget. Budget will be either low, medium, and high. Analyze the information and recommend a trip. It is good to contain the restaurant, hotel, and tourist attractions. Your answer will be based on Markdown and do use #, ##, ###. And for the list, Don't put h2 or h3 in the li tag. For example, don't do '- **something**' .  Don't use something else. And You don't need intro and conclusion. Just give me the information.Please put a line of spacing before the first sentence. And you don't need to include the information I gave you. Just give me the recommendation. "
       },
       {
         role: 'user',
-        content: `I will give you some information about the trip such as the number of days, location, type of trip, and budget. Budget will be either low, medium, and high. Analyze the information and recommend a trip. It is good to contain the restaurant, hotel, and tourist attractions. The days are ${days}, location is ${location}, type is ${type}, and budget is ${budget}. Your answer will be based on Markdown and do use #, ##, ###, and - for the list. Don't use something else. And You don't need intro and conclusion. Just give me the information.`
+        content: ` The days are ${days}, location is ${location}, type is ${type}, and budget is ${budget}. `
       },
     ],
     model: 'gpt-4o-mini'
   })
+  const { data, error } = await supabase.from("recommendation")
+  .insert(
+    {
+      // user_id: isAuthenticated(req).user.id,
+      u_id: isAuthenticated(req) ? isAuthenticated(req).user.id : 0,
+      days: days,
+      location: location,
+      type: type,
+      budget: budget,
+      recommendation: completion.choices[0].message.content
+    }
+  ).select("*")
+
+  if (error) {
+    console.log(error);
+  }
+
+
   
   // the answer is in completion.choices[0].message.content
   res.status(200).json({message: completion.choices[0].message.content});

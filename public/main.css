@@ -2,20 +2,318 @@
 @tailwind components;
 @tailwind utilities;
 
+body {
+  font-family: "Noto Sans", serif;
+}
+
 #profileDropdownMenu {
+  display: none;
+}
+
+#profileDropdownMenu.show {
+  display: block;
+}
+
+svg {
+  transition: fill 0.3s ease;
+}
+
+svg:hover path {
+  stroke: rgb(63, 63, 250);
+}
+
+.recommendationDetail {
+  h1 {
+    font-size: 2em;
+    margin-bottom: 16px;
+  }
+
+  h2 {
+    font-size: 1.5em;
+  }
+
+  h3 {
+    font-size: 1.17em;
+    margin-bottom: 16px;
+  }
+
+  img {
+    width: 60%;
+    display: block;
+    margin: 0 auto;
+  }
+
+  pre {
+    overflow: auto;
+    white-space: pre-wrap;
+    word-break: keep-all;
+  }
+
+  .line1,
+  .line2,
+  .line3 {
+    transition: transform 0.3s, opacity 0.3s;
+  }
+
+  .rotate {
+    gap: 2px;
+  }
+
+  .rotate .line1 {
+    transform: rotate(-45deg);
+    width: 20px;
+  }
+
+  .rotate .line2 {
+    opacity: 0;
+    width: 0;
+  }
+
+  .rotate .line3 {
+    width: 20px;
+    transform: rotate(45deg);
+  }
+
+  #recommendationContent {
+    h1 {
+      font-size: 20px;
+      margin-bottom: 16px;
+    }
+
+    h2 {
+      font-size: 1.5em;
+      margin-bottom: 10px;
+    }
+
+    h3 {
+      font-size: 1.17em;
+      margin-bottom: 10px;
+    }
+
+    ul {
+      list-style-type: none;
+      margin-bottom: 16px;
+    }
+
+    ul li {
+      margin-bottom: 8px;
+    }
+  }
+}
+
+.recommendation {
+  h1 {
+    font-size: 2em;
+    margin-bottom: 16px;
+  }
+
+  h2 {
+    font-size: 1.5em;
+    margin-bottom: 10px;
+  }
+
+  h3 {
+    font-size: 1.17em;
+    margin-bottom: 10px;
+  }
+
+  #answer ul {
+    list-style-type: none;
+    margin-bottom: 16px;
+  }
+
+  ul li {
+    margin-left: 16px;
+  }
+  .line1,
+  .line2,
+  .line3 {
+    transition: transform 0.3s, opacity 0.3s;
+  }
+
+  .rotate {
+    gap: 2px;
+  }
+  .rotate .line1 {
+    transform: rotate(-45deg);
+    width: 20px;
+  }
+
+  .rotate .line2 {
+    opacity: 0;
+    width: 0;
+  }
+
+  .rotate .line3 {
+    width: 20px;
+    transform: rotate(45deg);
+  }
+}
+
+.detail {
+  h1 {
+    font-size: 25px;
+    margin-bottom: 20px;
+    line-height: 40px;
+    font-weight: 800;
+  }
+
+  h2 {
+    font-size: 22px;
+    margin-top: 14px;
+    margin-bottom: 18px;
+    line-height: 30px;
+    font-weight: 600;
+  }
+
+  h3 {
+    font-size: 19px;
+    margin-bottom: 12px;
+    font-weight: 600;
+  }
+  p{
+    margin-bottom: 20px;
+  }
+  
+  #content img {
+    width: 60%;
+    display: block;
+    margin: 30px auto;
+  }
+
+  pre {
+    overflow: auto;
+    white-space: pre-wrap;
+    word-break: keep-all;
+  }
+}
+
+.edit {
+  .tag {
+    background-color: #fff2f2;
+    padding: 4px 8px;
+    color: rgb(110, 216, 5);
+    border-radius: 5px;
+  }
+
+  h1 {
+    font-size: 2em;
+  }
+
+  h2 {
+    font-size: 1.5em;
+  }
+
+  h3 {
+    font-size: 1.17em;
+  }
+
+  textarea {
+    font-size: 16px;
+    padding: 10px;
+  }
+  #preview {
+    border: 1px solid #ccc;
+    padding: 10px;
+    font-size: 16px;
+    overflow-y: auto;
+    white-space: pre-wrap;
+  }
+
+  #taglist span {
+    background-color: #fff2f2;
+    padding: 4px 8px;
+    color: rgb(110, 216, 5);
+    border-radius: 5px;
+  }
+}
+
+.list {
+  h2 {
+    font-size: 1.3rem;
+  }
+
+  .singlePost img {
     display: none;
   }
 
-  #profileDropdownMenu.show {
-    display: block;
+  .cardWrapper:nth-child(1) {
+    margin-top: 96px;
   }
 
-  svg {
-    transition: fill 0.3s ease;
+  @media (min-width: 768px) {
+    .cardWrapper:nth-child(2) {
+      margin-top: 96px;
+    }
   }
 
-  svg:hover path {
-    stroke: rgb(63, 63, 250);
+  @media (min-width: 1024px) {
+    .cardWrapper:nth-child(3) {
+      margin-top: 96px;
+    }
   }
 
+  @media (min-width: 1441px) {
+    .cardWrapper {
+      flex-basis: 23%;
+    }
 
+    .cardWrapper:nth-child(4) {
+      margin-top: 96px;
+    }
+  }
+
+  @media (min-width: 1921px) {
+    .cardWrapper {
+      flex-basis: 18%;
+    }
+
+    .cardWrapper:nth-child(5) {
+      margin-top: 96px;
+    }
+  }
+
+  #listWrapper {
+    height: auto;
+    min-height: 100%;
+    padding-bottom: 50px;
+  }
+
+  #pagination {
+    position: relative;
+    transform: translateY(-150%);
+  }
+}
+
+.write {
+  h1 {
+    font-size: 2em;
+  }
+
+  h2 {
+    font-size: 1.5em;
+  }
+
+  h3 {
+    font-size: 1.17em;
+  }
+
+  textarea {
+    font-size: 16px;
+    padding: 10px;
+  }
+  #preview {
+    border: 1px solid #ccc;
+    padding: 10px;
+    font-size: 16px;
+    overflow-y: auto;
+    white-space: pre-wrap;
+  }
+
+  #taglist span {
+    background-color: #fff2f2;
+    padding: 4px 8px;
+    color: rgb(110, 216, 5);
+    border-radius: 5px;
+  }
+}

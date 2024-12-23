@@ -17,11 +17,50 @@ app.get("/", (req, res) => {
       .from("user")
       .select("image")
       .eq("id", authStatus.user.id);
-      res.render("recommendation.ejs", { isAuthenticated: authStatus.authenticated, profileImage: profileImage[0].image });
+
+      const {data: history, error: historyError} = await supabase
+      .from("recommendation")
+      .select("*")
+      .eq("u_id", authStatus.user.id);
+
+      console.log(authStatus.user.id);
+      res.render("recommendation.ejs", { isAuthenticated: authStatus.authenticated, profileImage: profileImage[0].image, history: history });
     } else {
       res.render("recommendation.ejs", { isAuthenticated: authStatus.authenticated });
     }
   });
+
+  app.get("/recommendation/detail/:id", async (req, res) => {
+    const authStatus = isAuthenticated(req);
+    if(authStatus.authenticated){
+      const { data: profileImage, error: profileImageError } = await supabase
+      .from("user")
+      .select("image")
+      .eq("id", authStatus.user.id);
+
+      const { data, error } = await supabase
+      .from("recommendation")
+      .select("*")
+      .eq("id", req.params.id);
+
+      //history 
+      const {data: history, error: historyError} = await supabase
+      .from("recommendation")
+      .select("*")
+      .eq("u_id", authStatus.user.id);
+
+
+      res.render("recommendationDetail.ejs", { isAuthenticated: authStatus.authenticated, profileImage: profileImage[0].image, data: data[0], history: history });
+    } else {
+      res.render("recommendationDetail.ejs", { isAuthenticated: authStatus.authenticated });
+    }
+  })
+
+
+
+
+
+
 
 app.get("/write", async (req, res) => {
     const authStatus = isAuthenticated(req);
@@ -139,7 +178,8 @@ app.get("/list/:num", async (req, res) => {
             commentsResult.push(commentLength.length);
           }
 
-          console.log(commentsResult);
+
+
 
     
       const { data: total, error: totalError } = await supabase
