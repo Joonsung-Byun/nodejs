@@ -696,6 +696,10 @@ video {
   margin-top: 80px;
 }
 
+.mt-8 {
+  margin-top: 2rem;
+}
+
 .block {
   display: block;
 }
@@ -1332,6 +1336,11 @@ video {
   line-height: 1rem;
 }
 
+.text-xl {
+  font-size: 1.25rem;
+  line-height: 1.75rem;
+}
+
 .font-bold {
   font-weight: 700;
 }
@@ -1344,8 +1353,16 @@ video {
   font-weight: 600;
 }
 
+.leading-10 {
+  line-height: 2.5rem;
+}
+
 .leading-tight {
   line-height: 1.25;
+}
+
+.leading-5 {
+  line-height: 1.25rem;
 }
 
 .text-black {
@@ -1537,11 +1554,9 @@ svg:hover path {
 
 .recommendation {
   h1 {
-    font-size: 2em;
     margin-bottom: 16px;
   }
   h2 {
-    font-size: 1.5em;
     margin-bottom: 10px;
   }
   h3 {
@@ -1880,6 +1895,11 @@ svg:hover path {
 
   .md\:p-0 {
     padding: 0px;
+  }
+
+  .md\:text-xl {
+    font-size: 1.25rem;
+    line-height: 1.75rem;
   }
 
   .md\:hover\:bg-transparent:hover {

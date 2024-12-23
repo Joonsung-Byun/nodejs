@@ -18,25 +18,30 @@ if(deleteBtn) {
   );
 }
 
+if(sideBtn) {
+  sideBtn.addEventListener("click", (e) => {
+    e.stopPropagation();
+    sideBtn.classList.toggle('rotate');
+    if(defaultSidebar.classList.contains("-translate-x-full")) {
+    defaultSidebar.classList.remove("-translate-x-full");
+    } else {
+      defaultSidebar.classList.add("-translate-x-full");
+    }
+  });
+}
 
-sideBtn.addEventListener("click", (e) => {
-  e.stopPropagation();
-  sideBtn.classList.toggle('rotate');
-  if(defaultSidebar.classList.contains("-translate-x-full")) {
-  defaultSidebar.classList.remove("-translate-x-full");
-  } else {
-    defaultSidebar.classList.add("-translate-x-full");
-  }
-});
 
 document.querySelector(".homeWrapper").addEventListener("click", (e) => {
-  if(sideBtn.classList.contains('rotate')) {
-    sideBtn.classList.remove('rotate');
+  if(sideBtn && defaultSidebar) {
+    if(sideBtn.classList.contains('rotate')) {
+      sideBtn.classList.remove('rotate');
+    }
+  
+    if(!defaultSidebar.classList.contains("-translate-x-full")) {
+      defaultSidebar.classList.add("-translate-x-full");
+    }
   }
 
-  if(!defaultSidebar.classList.contains("-translate-x-full")) {
-    defaultSidebar.classList.add("-translate-x-full");
-  }
 });
 
 btn.addEventListener("click", (e) => {

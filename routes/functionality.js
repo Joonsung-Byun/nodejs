@@ -375,11 +375,13 @@ app.post("/recommend", async (req, res) => {
     ],
     model: 'gpt-4o-mini'
   })
+  console.log("isAuthenticated(req):", isAuthenticated(req))
   const { data, error } = await supabase.from("recommendation")
+
   .insert(
     {
       // user_id: isAuthenticated(req).user.id,
-      u_id: isAuthenticated(req) ? isAuthenticated(req).user.id : 0,
+      u_id: isAuthenticated(req) === true ? isAuthenticated(req).user.id : 0,
       days: days,
       location: location,
       type: type,
