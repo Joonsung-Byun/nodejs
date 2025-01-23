@@ -184,8 +184,10 @@ app.post("/imgUpload", upload.single("file"), async (req, res) => {
   }
 });
 
+
 app.post("/profileImgUpload", upload.single("file"), async (req, res) => {
   const file = req.file;
+  console.log(req.file);
   try {
     const uniqueFileName = `${uuidv4()}-${file.originalname}`;
     const { data: initialData, error } = await supabase.storage
@@ -350,6 +352,7 @@ app.post("/signup", async (req, res) => {
     res.status(200).json({ message: "success" });
   }
 });
+
 
 app.post("/recommend", async (req, res) => {
 
