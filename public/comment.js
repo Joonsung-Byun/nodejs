@@ -28,7 +28,6 @@ commentBtn.addEventListener('click', async (e) => {
                     const p3 = document.createElement('p');
                     const span = document.createElement('span');
                 
-                    // 태그들에 디자인 적용
                     article.className = articleClass;
                     footer.className = footerClass;
                     div.className = divClass;
@@ -45,9 +44,9 @@ commentBtn.addEventListener('click', async (e) => {
                     span.innerText = 'Just now';
                     p3.innerText = document.querySelector('#comment').value;
                 
-                    // 태그들을 조립 (이미지를 먼저 추가한 뒤 텍스트 추가)
-                    p1.appendChild(img); // 이미지가 먼저 나오도록 설정
-                    p1.append( res.data.writer ); // 그 다음에 텍스트가 나오도록 설정
+                    
+                    p1.appendChild(img); 
+                    p1.append( res.data.writer ); 
                     
                     p2.appendChild(span);
                     div.appendChild(p1);
