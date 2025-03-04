@@ -44,7 +44,7 @@ commentBtn.addEventListener('click', async (e) => {
                     } else {
                     img.src = res.data.profileImage;
                     }
-                    span.innerText = '1분 전';
+                    span.innerText = '1 minute ago';
                     p3.innerText = document.querySelector('#comment').value;
                 
                     // 태그들을 조립 (이미지를 먼저 추가한 뒤 텍스트 추가)
