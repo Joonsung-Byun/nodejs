@@ -66,12 +66,13 @@ app.put("/edit", async (req, res) => {
       tags: req.body.tags, 
       createdAt: getDate() 
     })
-    .eq("id", 203)
+    .eq("id", req.body.id)
 
     if(error) {
       console.log(error)
       res.status(500).send("Internal Server Error");
     } else {
+      console.log('success')
       res.status(200).json({ message: "success" });
     }
 
