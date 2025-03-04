@@ -36,6 +36,7 @@ commentBtn.addEventListener('click', async (e) => {
                     p2.className = p2Class;
                     p3.className = p3Class;
 
+                    
                     if(res.data.profileImage === null) {
                         img.src = '/images/profile.svg';
                     } else {
