@@ -36,9 +36,7 @@ commentBtn.addEventListener('click', async (e) => {
                     img.className = imgClass;
                     p2.className = p2Class;
                     p3.className = p3Class;
-                
-                    // 태그들에 내용 적용
-                    //이미지 기능 완성되면 user image로 변경
+
                     if(res.data.profileImage === null) {
                         img.src = '/images/profile.svg';
                     } else {
