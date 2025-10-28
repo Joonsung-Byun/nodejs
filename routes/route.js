@@ -43,24 +43,17 @@ app.get("/", (req, res) => {
       .select("*")
       .eq("id", req.params.id);
 
-      //history 
+      //history
       const {data: history, error: historyError} = await supabase
       .from("recommendation")
       .select("*")
       .eq("u_id", authStatus.user.id);
-
 
       res.render("recommendationDetail.ejs", { isAuthenticated: authStatus.authenticated, profileImage: profileImage[0].image, data: data[0], history: history });
     } else {
       res.render("recommendationDetail.ejs", { isAuthenticated: authStatus.authenticated });
     }
   })
-
-
-
-
-
-
 
 app.get("/write", async (req, res) => {
     const authStatus = isAuthenticated(req);
@@ -73,13 +66,12 @@ app.get("/write", async (req, res) => {
       .eq("id", authStatus.user.id);
       res.render("write.ejs", { isAuthenticated: authStatus.authenticated, profileImage: profileImage[0].image });
     }
-    
   });
 
 app.get("/login", (req, res) => {
     const authStatus = isAuthenticated(req);
     res.render("login.ejs", { isAuthenticated: authStatus.authenticated });
-  });
+});
 
 app.get("/signup", (req, res) => {
     const authStatus = isAuthenticated(req);
@@ -96,9 +88,8 @@ app.get("/edit/:id", async (req, res) => {
       .select("*")
       .eq("id", req.params.id);
 
-
     res.render("edit.ejs", { data: data[0], isAuthenticated: authStatus.authenticated, profileImage: authStatus.user.image });
-  });
+});
 
 app.get("/detail/:id", async (req, res) => {
     const authStatus = isAuthenticated(req);
@@ -129,136 +120,88 @@ app.get("/detail/:id", async (req, res) => {
 
         res.render("detail.ejs", { data: data[0], isAuthenticated: authStatus.authenticated, likes: likes, comments: comments, profileImage: profileImage[0].image });
       } else {
-      
-      res.render("detail.ejs", { data: data[0], isAuthenticated: authStatus.authenticated, likes: likes, comments: comments });
+        res.render("detail.ejs", { data: data[0], isAuthenticated: authStatus.authenticated, likes: likes, comments: comments });
       }
     } catch (e) {
       res.status(404).send("Not Found");
     }
   });
 
-app.get("/list/:num", async (req, res) => {
-  const initStart = 6;
-  const authStatus = isAuthenticated(req);
+  app.get("/list/:num", async (req, res) => {
+    const initStart = 6;
+    const authStatus = isAuthenticated(req);
+    const page = parseInt(req.params.num, 10) || 1;
 
-  if (req.params.num == 1) {
-    const { data, error } = await supabase
-      .from("posts")
-      .select("*")
-      .order("id", { ascending: false }) 
-      .range(0, 5);
+    // Fetch posts then batch fetch likes/comments
+    const rangeStart = page === 1 ? 0 : initStart * (page - 1);
+    const rangeEnd = page === 1 ? 5 : page * 5 + (page - 1);
+    const { data: postsData } = await supabase
+      .from('posts')
+      .select('*')
+      .order('id', { ascending: false })
+      .range(rangeStart, rangeEnd);
 
-      const ids = data.map((post) => post.id);
-      
-      let likesResult = [];
-      try {
-            for (let i = 0; i < ids.length; i++) {
-              const { data, error } = await supabase
-                .from("likes")
-                .select("*")
-                .eq("p_id", parseInt(ids[i]));
-          
-              if (error) {
-                console.error(`Error fetching likes for id ${ids[i]}:`, error);
-                continue; // 다음 id로 넘어갑니다.
-              }
-              likesResult.push(data.length);
-            }
-          } catch (err) {
-            console.error("Unexpected error:", err);
-            res.status(500).json({ message: "Internal Server Error" });
-          }
-          let commentsResult = [];
+    const posts = postsData || [];
+    const ids = posts.map((p) => p.id);
 
-          for( let i = 0; i < ids.length; i++){
-            const { data: commentLength, error } = await supabase
-            .from("comments")
-            .select("*")
-            .eq("p_id", parseInt(ids[i]));
-            commentsResult.push(commentLength.length);
-          }
+    let likesResult = [];
+    let commentsResult = [];
 
+    if (ids.length > 0) {
+      // Batch fetch likes and comments instead of N+1 queries
+      const { data: likesAll } = await supabase
+        .from('likes')
+        .select('p_id')
+        .in('p_id', ids);
 
-
-
-    
-      const { data: total, error: totalError } = await supabase
-      .from("posts")
-      .select("id");
-
-    const { data: likes, error: likeError } = await supabase
-      .from("likes")
-      .select("p_id")
-      .order("id", { ascending: false }) 
-      .range(0, 5);
-
-      if(authStatus.authenticated){
-        const { data: profileImage, error: profileImageError } = await supabase
-        .from("user")
-        .select("image")
-        .eq("id", authStatus.user.id);
-
-        res.render("list.ejs", {
-          posts: data,
-          total: total.length,
-          currentPage: req.params.num,
-          isAuthenticated: authStatus.authenticated,
-          likesResult: likesResult,
-          profileImage: profileImage[0].image,
-          commentsResult: commentsResult
-        })
-      } else {
-        res.render("list.ejs", {
-          posts: data,
-          total: total.length,
-          currentPage: req.params.num,
-          isAuthenticated: authStatus.authenticated,
-          likesResult: likesResult,
-          commentsResult: commentsResult
+      const likesMap = {};
+      (likesAll || []).forEach((r) => {
+        likesMap[r.p_id] = (likesMap[r.p_id] || 0) + 1;
       });
-      }
-  } else {
-    const { data, error } = await supabase
-      .from("posts")
-      .select("*")
-      .order("id", { ascending: false }) 
-      .range(
-        initStart * (req.params.num - 1),
-        req.params.num * 5 + (req.params.num - 1)
-      );
 
-      const ids = data.map((post) => post.id);
-      let likesResult = [];
-      try {
-            for (let i = 0; i < ids.length; i++) {
-              const { data, error } = await supabase
-                .from("likes")
-                .select("*")
-                .eq("p_id", parseInt(ids[i]));
-          
-              if (error) {
-                console.error(`Error fetching likes for id ${ids[i]}:`, error);
-                continue; // 다음 id로 넘어갑니다.
-              }
-              likesResult.push(data.length);
-            }
-          } catch (err) {
-            console.error("Unexpected error:", err);
-            res.status(500).json({ message: "Internal Server Error" });
-          }
-    const { data: total, error: totalError } = await supabase
-      .from("posts")
-      .select("id");
+      likesResult = ids.map((id) => likesMap[id] || 0);
 
-    res.render("list.ejs", {
-      posts: data,
-      total: total.length,
+      const { data: commentsAll } = await supabase
+        .from('comments')
+        .select('p_id')
+        .in('p_id', ids);
+
+      const commentsMap = {};
+      (commentsAll || []).forEach((r) => {
+        commentsMap[r.p_id] = (commentsMap[r.p_id] || 0) + 1;
+      });
+
+      commentsResult = ids.map((id) => commentsMap[id] || 0);
+    }
+
+    const { data: total } = await supabase.from('posts').select('id');
+
+    if (authStatus.authenticated) {
+      const { data: profileImage } = await supabase
+        .from('user')
+        .select('image')
+        .eq('id', authStatus.user.id);
+
+      return res.render('list.ejs', {
+        posts,
+        total: total ? total.length : 0,
+        currentPage: req.params.num,
+        isAuthenticated: authStatus.authenticated,
+        likesResult,
+        profileImage: profileImage && profileImage[0] ? profileImage[0].image : null,
+        commentsResult,
+      });
+    }
+
+    return res.render('list.ejs', {
+      posts,
+      total: total ? total.length : 0,
       currentPage: req.params.num,
       isAuthenticated: authStatus.authenticated,
-      likesResult: likesResult,
+      likesResult,
+      commentsResult,
     });
-  }
-});
+  });
 
 app.get("/myPage", async (req, res) => {
   const authStatus = isAuthenticated(req);
