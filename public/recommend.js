@@ -1,4 +1,4 @@
-const { marked } = require("marked");
+import { marked } from "https://cdn.jsdelivr.net/npm/marked/lib/marked.esm.js";
 
 const recommendation = document.querySelector("#recommendation");
 recommendation.classList.add("text-white")
