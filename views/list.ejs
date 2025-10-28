@@ -4,82 +4,131 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>NodeBlog List</title>
+  <title>NodeTrip - Travel Stories</title>
   <link href="/output.css" rel="stylesheet">
-     <link rel="preconnect" href="https://fonts.googleapis.com">
-     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-     <link href="https://fonts.googleapis.com/css2?family=Noto+Sans:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
+  <link href="/main.css" rel="stylesheet">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Playfair+Display:wght@400;500;600;700&display=swap" rel="stylesheet">
 </head>
 
-<body class="bg-white pb-4 list">
+<body class="min-h-screen list">
   <%- include('nav.ejs') %>
+  
+  <!-- Page Header -->
+  <section class="pt-32 pb-12 px-4">
+    <div class="max-w-7xl mx-auto text-center">
+      <h1 class="text-4xl md:text-5xl font-bold mb-4">
+        <span class="text-gradient-primary font-serif">Travel Stories</span>
+      </h1>
+      <p class="text-xl text-gray-600 max-w-2xl mx-auto">
+        Discover inspiring travel adventures from our community of explorers
+      </p>
+    </div>
+  </section>
+
   <div class="min-h-screen">
-    <div id="listWrapper" class="p-4 h-auto min-h-full ">
+    <div id="listWrapper" class="max-w-7xl mx-auto px-4 h-auto min-h-full">
       <% if(posts.length===0) {%>
-      <div class="mx-auto">
-        <h1 class="text-2xl font-semibold mt-20"> No posts yet. Create one! </h1>
+      <div class="text-center py-20">
+        <div class="card-modern max-w-md mx-auto p-12">
+          <div class="w-16 h-16 mx-auto mb-6 rounded-full bg-gradient-to-r from-purple-400 to-pink-400 flex items-center justify-center">
+            <svg class="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6"></path>
+            </svg>
+          </div>
+          <h2 class="text-2xl font-bold text-gray-800 mb-4">No Stories Yet</h2>
+          <p class="text-gray-600 mb-6">Be the first to share your amazing travel experience!</p>
+          <a href="/write" class="btn-gradient">Create Your Story</a>
+        </div>
       </div>
       <%} else {%>
-      <div class="drop-shadow-lg pb-4 flex flex-wrap justify-center w-full gap-x-4">
+      <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6 pb-4">
         <% for (let i=0; i < posts.length; i++) {%>
-        <div class="cardWrapper duration-300 hover:-translate-y-3 flex flex-col gap-2 bg-white rounded drop-shadow-lg overflow-hidden mb-6 pb-2 basis-11/12 md:basis-[48%] lg:basis-3/12">
-          <a class="h-full" href=<%- `/detail/${posts[i].id}` %>>
-            <section class="relative w-full">
-              <% if(posts[i].thumbnailUrl !=="" ) { %> <img src="<%- posts[i].thumbnailUrl %>" alt="hero" class="block object-cover h-auto max-h-64 w-full ">
+        <article class="card-modern group cursor-pointer">
+          <a class="block h-full" href=<%- `/detail/${posts[i].id}` %>>
+            <div class="relative overflow-hidden rounded-t-2xl">
+              <% if(posts[i].thumbnailUrl !=="" ) { %>
+                <img src="<%- posts[i].thumbnailUrl %>" alt="Travel destination" class="w-full h-64 object-cover group-hover:scale-110 transition-transform duration-700">
               <% } else {%>
-              <img src="/images/placeholder.jpg" alt="hero" class="block object-cover h-auto max-h-64 w-full ">
+                <img src="/images/placeholder.jpg" alt="Travel destination" class="w-full h-64 object-cover group-hover:scale-110 transition-transform duration-700">
               <%}%>
-            </section>
+              <div class="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+            </div>
 
-            <section class="flex flex-col gap-4 justify-between pt-2 px-2">
-              <div class="flex flex-col gap-1 singlePost">
-                <h2 class="font-semibold "><%= posts[i].title %></h2> 
-                <span class="data-content"><%- posts[i].markdownContent %></span>
-              </div> 
-
-              <div class="flex gap-3">
-                <span><%- posts[i].createdAt %></span>
-                <span>•</span>
-                <span><%= commentsResult[i]%>  <%= commentsResult[i] == 0 || commentsResult[i] ==1 ? 'comment' : 'comments' %> </span>
+            <div class="p-6">
+              <div class="flex items-center gap-3 mb-4">
+                <div class="w-8 h-8 rounded-full bg-gradient-to-r from-purple-400 to-pink-400 flex items-center justify-center">
+                  <span class="text-white font-semibold text-sm"><%= posts[i].writer.charAt(0).toUpperCase() %></span>
+                </div>
+                <div>
+                  <p class="font-semibold text-gray-800"><%= posts[i].writer %></p>
+                  <p class="text-sm text-gray-500"><%- posts[i].createdAt %></p>
+                </div>
               </div>
 
-                
-            </section>
+              <h2 class="text-xl font-bold text-gray-800 mb-3 group-hover:text-purple-600 transition-colors duration-300 line-clamp-2">
+                <%= posts[i].title %>
+              </h2>
 
-        <section class="pt-2 px-2 flex gap-2 border-t-2">
-          <div>
-            <span>by <strong><%- posts[i].writer %></strong></span>
-            <span class="py-1 px-2 rounded-2xl h-9 border-gray-400 listLikes" data-id=<%- posts[i].id %>>❤️ <%- likesResult[i]  %> </span>
-          </div>
+              <div class="text-gray-600 mb-4 leading-relaxed line-clamp-3 singlePost">
+                <span class="data-content"><%- posts[i].markdownContent %></span>
+              </div>
 
-          
-        </section>
-
-
-
-        </a>
-      </div>
-      <% }%>
+              <div class="flex items-center justify-between pt-4 border-t border-gray-100">
+                <div class="flex items-center gap-4">
+                  <span class="flex items-center gap-1 text-gray-500 hover:text-red-500 transition-colors listLikes" data-id=<%- posts[i].id %>>
+                    <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 20 20">
+                      <path fill-rule="evenodd" d="M3.172 5.172a4 4 0 015.656 0L10 6.343l1.172-1.171a4 4 0 115.656 5.656L10 17.657l-6.828-6.829a4 4 0 010-5.656z" clip-rule="evenodd"></path>
+                    </svg>
+                    <%- likesResult[i] %>
+                  </span>
+                  <span class="flex items-center gap-1 text-gray-500">
+                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z"></path>
+                    </svg>
+                    <%= commentsResult[i] %>
+                  </span>
+                </div>
+                <span class="text-sm font-medium text-purple-600">Read more</span>
+              </div>
+            </div>
+          </a>
+        </article>
+        <% }%>
       <% }%>
     </div>
   </div>
   </div>
-  <ul class="flex items-center justify-center w-full -space-x-px text-base mt-4 h-12" id="pagination">
-    <li id="previousBtn"> <a href="/list/<%= parseInt(currentPage) - parseInt(1) %>" class="flex items-center justify-center px-4 h-10 ms-0 leading-tight text-gray-500  bg-white border border-e-0 border-gray-300 rounded-s-lg hover:bg-gray-100 hover:text-gray-700">
-        <span class="sr-only">Previous</span> <svg class="w-3 h-3 rtl:rotate-180" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 6 10">
-          <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 1 1 5l4 4" />
-        </svg> </a> </li>
-    <% const amount=Math.ceil(total / 6) %>
-    <% for(let i=0; i< amount; i++) {%>
-    <li class="border"> <a href="/list/<%= i+1 %>" data-page="page_<%= i+1 %>" class="page_btn flex items-center justify-center px-4 h-10 leading-tight text-gray-500 bg-white border border-gray-300 hover:bg-gray-100 hover:text-gray-700 ">
-        <%= i+1 %>
-      </a> </li>
-    <% } %>
-    <li id="nextBtn"> <a href="/list/<%= parseInt(currentPage) + parseInt(1) %>" class="flex items-center justify-center px-4 h-10 leading-tight text-gray-500 border bg-white border-gray-300 rounded-e-lg hover:bg-gray-100 hover:text-gray-700">
-        <span class="sr-only">Next</span> <svg class="w-3 h-3 rtl:rotate-180" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 6 10">
-          <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m1 9 4-4-4-4" />
-        </svg> </a> </li>
-  </ul>
+  <!-- Modern Pagination -->
+  <div class="flex justify-center mt-16 mb-8">
+          <ul class="flex items-center gap-1" id="pagination">
+        <li id="previousBtn">
+          <a href="/list/<%= parseInt(currentPage) - parseInt(1) %>" class="flex items-center justify-center w-10 h-10 rounded-xl text-gray-700 hover:bg-purple-50 hover:text-purple-600 transition-all duration-300">
+            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"></path>
+            </svg>
+          </a>
+        </li>
+        
+        <% const amount=Math.ceil(total / 6) %>
+        <% for(let i=0; i< amount; i++) {%>
+        <li>
+          <a href="/list/<%= i+1 %>" data-page="page_<%= i+1 %>" class="page_btn flex items-center justify-center w-10 h-10 rounded-xl font-medium transition-all duration-300 <%= currentPage == i+1 ? 'bg-gradient-to-r from-purple-500 to-pink-500 text-white shadow-lg' : 'text-gray-700 hover:bg-purple-50 hover:text-purple-600' %>">
+            <%= i+1 %>
+          </a>
+        </li>
+        <% } %>
+        
+        <li id="nextBtn">
+          <a href="/list/<%= parseInt(currentPage) + parseInt(1) %>" class="flex items-center justify-center w-10 h-10 rounded-xl text-gray-700 hover:bg-purple-50 hover:text-purple-600 transition-all duration-300">
+            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path>
+            </svg>
+          </a>
+        </li>
+      </ul>
+  </div>
   <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
   <script src="/list.js"></script>
