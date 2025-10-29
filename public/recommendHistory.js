@@ -1,9 +1,9 @@
-import { marked } from "https://cdn.jsdelivr.net/npm/marked/lib/marked.esm.js";
+// import { marked } from "https://cdn.jsdelivr.net/npm/marked/lib/marked.esm.js";
 
 const recommendationContent = document.querySelector("#recommendationContent");
 
 
-recommendationContent.innerHTML = marked(recommendationContent.innerHTML);
+recommendationContent.innerHTML = marked.marked(recommendationContent.innerHTML);
 
 const defaultSidebar = document.querySelector("#default-sidebar");
 const sideBtn = document.querySelector(".historyBtn");

@@ -1,4 +1,4 @@
-import { marked } from "https://cdn.jsdelivr.net/npm/marked/lib/marked.esm.js";
+// import { marked } from "https://cdn.jsdelivr.net/npm/marked/lib/marked.esm.js";
 const h1Btn = document.querySelector("#h1Btn");
 const h2Btn = document.querySelector("#h2Btn");
 const h3Btn = document.querySelector("#h3Btn");
@@ -154,7 +154,7 @@ textArea.addEventListener('input', function() {
   markdownText = markdownText.replace(/\n\n/g, '\n\n'); // 두 번의 줄바꿈은 그대로 유지
 
   // Marked.js를 사용하여 마크다운을 HTML로 변환
-  const htmlContent = marked(markdownText);
+  const htmlContent = marked.marked(markdownText);
 
   // 변환된 HTML을 preview에 반영
   preview.innerHTML = htmlContent;
@@ -176,7 +176,7 @@ if(location.href.includes("write")) {
         body: JSON.stringify({
           title: title.value,
           content: textArea.value,
-          markdownContent: marked(textArea.value),
+          markdownContent: marked.marked(textArea.value),
           tags: tagString,
           thumbnailUrl: thumbnailUrl,
         }),
@@ -197,7 +197,7 @@ if(location.href.includes("edit")) {
     let markdownText = textArea.value;
     markdownText = markdownText.replace(/\n(?!\n)/g, '  \n');
     markdownText = markdownText.replace(/\n\n/g, '\n\n');
-    const htmlContent = marked(markdownText);
+    const htmlContent = marked.marked(markdownText);
     preview.innerHTML = htmlContent;
 }
 initialPreview();
@@ -231,7 +231,7 @@ initialPreview();
           id: editBtn.dataset.id,
           title: title.value,
           content: textArea.value,
-          markdownContent: marked(textArea.value),
+          markdownContent: marked.marked(textArea.value),
           tags: tagString,
           thumbnailUrl: getThumbnailUrl(),
         }),

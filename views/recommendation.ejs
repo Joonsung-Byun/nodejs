@@ -9,6 +9,72 @@
    <link rel="preconnect" href="https://fonts.googleapis.com">
    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
+
+   <style>
+      #answer {
+  font-family: 'Inter', 'Noto Sans KR', sans-serif;
+  background-color: #f9fafb;
+  border-radius: 12px;
+  padding: 24px;
+  line-height: 1.75;
+  color: #1f2937;
+}
+
+/* 헤더 스타일 */
+#answer h1 {
+  font-size: 1.5rem;
+  font-weight: 700;
+  margin-top: 1.5em;
+  margin-bottom: 0.6em;
+  border-bottom: 2px solid #e5e7eb;
+  padding-bottom: 0.3em;
+  color: #111827;
+}
+
+#answer h2 {
+  font-size: 1.2rem;
+  font-weight: 600;
+  margin-top: 1em;
+  margin-bottom: 0.4em;
+  color: #1f2937;
+}
+
+/* 문단 */
+#answer p {
+  margin-top: 0.4em;
+  margin-bottom: 0.4em;
+}
+
+/* 리스트 (있을 경우) */
+#answer ul,
+#answer ol {
+  margin-left: 1.5em;
+  margin-top: 0.5em;
+  margin-bottom: 0.5em;
+}
+
+/* 강조 */
+#answer strong {
+  font-weight: 600;
+  color: #111827;
+}
+
+/* 코드나 특수 텍스트 있을 경우 대비 */
+#answer code {
+  background-color: #e5e7eb;
+  padding: 0.2em 0.4em;
+  border-radius: 4px;
+  font-family: 'Fira Code', monospace;
+  font-size: 0.95em;
+}
+
+/* 구분선 */
+#answer hr {
+  border: none;
+  border-top: 1px solid #e5e7eb;
+  margin: 1.5em 0;
+}
+   </style>
 </head>
 
 <body class="bg-white pb-4 recommendation">
@@ -39,7 +105,7 @@
                   <span class="line3 h-1 w-9 bg-gray-500 rounded-md"></span>
                 </button>
                <aside id="default-sidebar"
-                  class=" w-64 h-screen absolute lg:relative transition-transform -translate-x-full lg:translate-x-0">
+                  class=" w-64 h-screen lg:min-h-full absolute lg:relative transition-transform -translate-x-full lg:translate-x-0">
                   <div class="h-full px-3 py-4 overflow-y-auto bg-gray-100 text-black ">
                      <ul class="space-y-2 font-medium mt-10 lg:mt-0 list-none">
                         <% if (!isAuthenticated) { %>
@@ -133,21 +199,7 @@
                   <h2 class="text-2xl font-bold">Recommended Trip Plan</h2>
                   <div id="recommendList" class="flex flex-col gap-4 mt-4">
                      <div class="flex flex-col gap-2 border rounded-lg">
-                        <p id="answer"></p>
-
-                        <div role="status" id="spinner" class="hidden">
-                           <svg aria-hidden="true"
-                              class="inline w-8 h-8 text-gray-200 animate-spin dark:text-gray-600 fill-gray-600 dark:fill-gray-300"
-                              viewBox="0 0 100 101" fill="none" xmlns="http://www.w3.org/2000/svg">
-                              <path
-                                 d="M100 50.5908C100 78.2051 77.6142 100.591 50 100.591C22.3858 100.591 0 78.2051 0 50.5908C0 22.9766 22.3858 0.59082 50 0.59082C77.6142 0.59082 100 22.9766 100 50.5908ZM9.08144 50.5908C9.08144 73.1895 27.4013 91.5094 50 91.5094C72.5987 91.5094 90.9186 73.1895 90.9186 50.5908C90.9186 27.9921 72.5987 9.67226 50 9.67226C27.4013 9.67226 9.08144 27.9921 9.08144 50.5908Z"
-                                 fill="currentColor" />
-                              <path
-                                 d="M93.9676 39.0409C96.393 38.4038 97.8624 35.9116 97.0079 33.5539C95.2932 28.8227 92.871 24.3692 89.8167 20.348C85.8452 15.1192 80.8826 10.7238 75.2124 7.41289C69.5422 4.10194 63.2754 1.94025 56.7698 1.05124C51.7666 0.367541 46.6976 0.446843 41.7345 1.27873C39.2613 1.69328 37.813 4.19778 38.4501 6.62326C39.0873 9.04874 41.5694 10.4717 44.0505 10.1071C47.8511 9.54855 51.7191 9.52689 55.5402 10.0491C60.8642 10.7766 65.9928 12.5457 70.6331 15.2552C75.2735 17.9648 79.3347 21.5619 82.5849 25.841C84.9175 28.9121 86.7997 32.2913 88.1811 35.8758C89.083 38.2158 91.5421 39.6781 93.9676 39.0409Z"
-                                 fill="currentFill" />
-                           </svg>
-                           <span class="sr-only">Loading...</span>
-                        </div>
+                        <div id="answer" class="bg-gray-50 rounded-lg min-h-[100px]"></div>
                      </div>
                   </div>
                </div>

@@ -9,9 +9,10 @@ const upload = multer();
 const { createClient } = require("@supabase/supabase-js");
 const isAuthenticated = require("../util/token");
 require("dotenv").config();
+const marked = require("marked");
 //supabase link
 const supabase = createClient(process.env.SUPABASEURL, process.env.SUPABASEKEY);
-const OpenAI = require('openai')
+const OpenAI = require("openai");
 
 function getDate() {
   const now = new Date();
@@ -33,7 +34,6 @@ app.post("/add", async (req, res) => {
   if (!req.body.title || !req.body.content) {
     res.send("Please fill in the title and content");
   } else {
-
     const { data, error } = await supabase
       .from("posts")
       .insert({
@@ -53,37 +53,32 @@ app.post("/add", async (req, res) => {
 });
 
 app.put("/edit", async (req, res) => {
-
   try {
     const { data, error } = await supabase
-    .from("posts")
-    .update({ 
-      title: req.body.title, 
-      content: req.body.content, 
-      date: formattedDate, 
-      markdownContent: req.body.markdownContent, 
-      thumbnailUrl: req.body.thumbnailUrl, 
-      tags: req.body.tags, 
-      createdAt: getDate() 
-    })
-    .eq("id", req.body.id)
+      .from("posts")
+      .update({
+        title: req.body.title,
+        content: req.body.content,
+        date: formattedDate,
+        markdownContent: req.body.markdownContent,
+        thumbnailUrl: req.body.thumbnailUrl,
+        tags: req.body.tags,
+        createdAt: getDate(),
+      })
+      .eq("id", req.body.id);
 
-    if(error) {
-      console.log(error)
+    if (error) {
+      console.log(error);
       res.status(500).send("Internal Server Error");
     } else {
-      console.log('success')
+      console.log("success");
       res.status(200).json({ message: "success" });
     }
-
   } catch (err) {
     console.error("Error:", err);
     res.status(501).send("Server error.");
   }
-
-}
-);
-
+});
 
 app.post("/edit", async (req, res) => {
   const { data, error } = await supabase
@@ -185,7 +180,6 @@ app.post("/imgUpload", upload.single("file"), async (req, res) => {
   }
 });
 
-
 app.post("/profileImgUpload", upload.single("file"), async (req, res) => {
   const file = req.file;
   console.log(req.file);
@@ -208,7 +202,7 @@ app.post("/profileImgUpload", upload.single("file"), async (req, res) => {
         })
         .eq("email", isAuthenticated(req).user.email);
 
-        const {data: commentImage, error: commentImageError} = await supabase
+      const { data: commentImage, error: commentImageError } = await supabase
         .from("comments")
         .update({
           writer_image:
@@ -217,8 +211,11 @@ app.post("/profileImgUpload", upload.single("file"), async (req, res) => {
         })
         .eq("writer_email", isAuthenticated(req).user.email);
 
-      res.json({url: `${process.env.SUPABASEURL}/storage/v1/object/public/` + initialData.fullPath});
-
+      res.json({
+        url:
+          `${process.env.SUPABASEURL}/storage/v1/object/public/` +
+          initialData.fullPath,
+      });
     }
   } catch (err) {
     console.error("Error:", err);
@@ -235,7 +232,6 @@ app.delete("/profileImgDelete", async (req, res) => {
   if (error) {
     res.status(500).send("Internal Server Error");
   } else {
-
     const { data: commentImage, error: commentImageError } = await supabase
       .from("comments")
       .update({ writer_image: null })
@@ -252,7 +248,6 @@ app.post("/like", async (req, res) => {
   } else {
     const useremail = isAuthenticated(req).user.email;
     const postId = req.body.postId;
-
 
     const { data: duplicateCheck, error: duplicateError } = await supabase
       .from("likes")
@@ -294,8 +289,8 @@ app.post("/comment", async (req, res) => {
   const p_id = req.body.postId;
   const content = req.body.content;
 
-  if(!isAuthenticated(req).authenticated){
-    res.status(401).json({message: "Unauthorized"});
+  if (!isAuthenticated(req).authenticated) {
+    res.status(401).json({ message: "Unauthorized" });
     return;
   }
   const writer = isAuthenticated(req).user.username;
@@ -320,8 +315,6 @@ app.post("/comment", async (req, res) => {
     },
   ]);
 
-
-
   if (error) {
     res.status(500).json({ message: "Internal Server Error" });
   } else {
@@ -336,16 +329,13 @@ app.post("/comment", async (req, res) => {
 });
 
 app.post("/signup", async (req, res) => {
-
-  const { data, error } = await supabase
-    .from("user")
-    .insert([
-      {
-        email: req.body.email,
-        password: req.body.password,
-        username: req.body.username,
-      },
-    ]);
+  const { data, error } = await supabase.from("user").insert([
+    {
+      email: req.body.email,
+      password: req.body.password,
+      username: req.body.username,
+    },
+  ]);
 
   if (error) {
     res.status(500).json({ message: "Internal Server Error" });
@@ -354,55 +344,89 @@ app.post("/signup", async (req, res) => {
   }
 });
 
-
 app.post("/recommend", async (req, res) => {
-
   const openai = new OpenAI({ apiKey: process.env.APIKEY });
-  
+
   const days = req.body.days;
   const location = req.body.location;
   const type = req.body.type;
   const budget = req.body.budget;
 
+  const messages = [
+    {
+      role: "system",
+      content: `
+You are a professional AI travel planner.
+Based on the user's trip info (days, location, type, and budget),
+recommend a realistic and pleasant travel itinerary.
+
+Follow this exact format and tone shown in the example below.
+
+---
+# Day 1
+## Morning
+Enjoy a relaxing walk through Bukchon Hanok Village, exploring traditional houses and quiet alleys.
+
+## Afternoon
+Visit a cozy café in Samcheong-dong such as “Onion Anguk,” known for its minimalist atmosphere and fresh pastries.
+
+## Evening
+Dinner at “Mingles,” a Michelin-starred modern Korean restaurant. Overnight stay at “L7 Hongdae Hotel.”
+
+# Day 2
+## Morning
+Start your day with brunch at “Anthracite Coffee” near Itaewon.
+
+## Afternoon
+Unwind at Dragon Hill Spa for a full-body relaxation.
+
+## Evening
+Walk along the Han River at sunset and end your trip with dinner at “The Hanok Smith House,” a cozy local spot.
+---
+
+Guidelines:
+- Output only in Markdown format (#, ## for headers)
+- it's good to include some emojis.
+- Do NOT restate user inputs.
+- Use a calm and warm tone.
+- Use line spacing before the first sentence.
+`,
+    },
+    {
+      role: "user",
+      content: `The days are ${days}, location is ${location}, type is ${type}, and budget is ${budget}.`,
+    },
+  ];
 
   const completion = await openai.chat.completions.create({
-    messages: [
-      {
-        role: 'system',
-        content: "You are a helpful assistant for trip planning. I will give you some information about the trip such as the number of days, location, type of trip, and budget. Budget will be either low, medium, and high. Analyze the information and recommend a trip. It is good to contain the restaurant, hotel, and tourist attractions. Your answer will be based on Markdown and do use #, ##, ###. And for the list, Don't put h2 or h3 in the li tag. For example, don't do '- **something**' .  Don't use something else. And You don't need intro and conclusion. Just give me the information.Please put a line of spacing before the first sentence. And you don't need to include the information I gave you. Just give me the recommendation. "
-      },
-      {
-        role: 'user',
-        content: ` The days are ${days}, location is ${location}, type is ${type}, and budget is ${budget}. `
-      },
-    ],
-    model: 'gpt-4o-mini'
-  })
+    model: "gpt-4o-mini",
+    messages,
+  });
 
-  if(isAuthenticated(req).authenticated === true){
-    const { data:insertHistory, error:insertHistoryError } = await supabase.from("recommendation")
-    .insert(
-      {
-        u_id:  isAuthenticated(req).user.id,
+  if (isAuthenticated(req).authenticated === true) {
+    const { data: insertHistory, error: insertHistoryError } = await supabase
+      .from("recommendation")
+      .insert({
+        u_id: isAuthenticated(req).user.id,
         days: days,
         location: location,
         type: type,
         budget: budget,
-        recommendation: completion.choices[0].message.content
-      }
-    ).select("*")
+        recommendation: completion.choices[0].message.content,
+      })
+      .select("*");
 
-    if(insertHistoryError){
-      console.log(insertHistoryError)
+    if (insertHistoryError) {
+      console.log(insertHistoryError);
     } else {
-      console.log(insertHistory)
+      console.log(insertHistory);
     }
   }
 
-
   // the answer is in completion.choices[0].message.content
-  res.status(200).json({message: completion.choices[0].message.content});
-})
-
+  res
+    .status(200)
+    .json({ message: marked.marked(completion.choices[0].message.content) });
+});
 
 module.exports = app;

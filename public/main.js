@@ -11,7 +11,7 @@ if (location.href.includes("list")) {
     singleList.classList.remove("text-gray-400");
   });
 
-  list.style.color = "white";
+  list.classList.add("nav-active");
 }
 
 if (location.href.includes("write")) {
@@ -21,7 +21,7 @@ if (location.href.includes("write")) {
     singleList.classList.remove("text-gray-400");
   });
 
-  write.style.color = "white";
+  write.classList.add("nav-active");
 }
 
 if(location.href.includes("myPage")){
